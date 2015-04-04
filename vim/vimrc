@@ -1,0 +1,41 @@
+execute pathogen#infect()
+execute pathogen#helptags()
+
+""""""""""""""""""""""""""""""""""""""""""
+" Basic features
+""""""""""""""""""""""""""""""""""""""""""
+
+syntax on
+set nocompatible
+set incsearch           " search as characters are entered
+set hlsearch            " highlight matches
+set number              " line numbers"
+set autoindent
+
+" Tab spec
+set tabstop=4
+set expandtab
+set shiftwidth=4
+
+set ignorecase
+set showmode            " Show the editing mode on last line
+set t_Co=256
+set encoding=utf-8
+
+" pops Tagbar
+nmap <F8> :TagbarToggle<CR>
+
+filetype plugin on
+set backspace=indent,eol,start
+
+" Color scheme
+colorscheme ir_black
+
+" Maps Coquille commands to <F2> (Undo), <F3> (Next), <F4> (ToCursor)
+au FileType coq call coquille#FNMapping()
+
+"Python doc
+nnoremap <buffer> K :<C-u>execute "!pydoc " . expand("<cword>")<CR>
+
+"Python folding plugin : To be able to read doc
+let g:SimpylFold_docstring_preview = 1
