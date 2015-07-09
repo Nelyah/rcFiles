@@ -37,11 +37,13 @@ noremap gV `[V`]
 
 " Tweaking the 'super' button
 let mapleader = "\<Space>"
-nnoremap <Leader>o :ctrlP<CR>
+nnoremap <Leader>o :CtrlP<CR>
 nnoremap <Leader>w :w<CR>
 nmap <Leader><Leader> V
 vmap v <Plug>(expand_region_expand)
 vmap <C-v> <Plug>(expand_region_shrink)
+" Turn off highlight after search
+nnoremap <Leader>a :noh<return><CR>
 
 " Stupid window...
 map q: :q
@@ -88,7 +90,7 @@ function! s:Repl()
 endfunction
 vmap <silent> <expr> p <sid>Repl()
 
-" Using snipmate with YCM
+" Using snipmate with YCM - not working yet
 let g:UltiSnipsExpandTrigger="<c-j>"
 let g:UltiSnipsJumpForwardTrigger="<c-j>"
 let g:UltiSnipsJumpBackwardTrigger="<c-k>"
