@@ -5,5 +5,5 @@ rm -rf ~/.vim/
 mkdir ~/.vim/
 cp -r vim/* ~/.vim/
 cd ~/.vim/bundle/YouCompleteMe/
-./install.sh --clang-completer
+./install.py --clang-completer
 cd $OLDPWD
