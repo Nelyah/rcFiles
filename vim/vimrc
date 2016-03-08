@@ -33,6 +33,10 @@ noremap k j
 noremap j h
 noremap gV `[V`]
 
+nnoremap <C-j> <C-w>j 
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+nnoremap <C-m> <C-w>m
 
 " YouCompleteMe config File
 let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/examples/.ycm_extra_conf.py'
