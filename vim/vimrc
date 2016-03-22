@@ -39,7 +39,7 @@ nnoremap <C-l> <C-w>l
 nnoremap <C-m> <C-w>m
 
 " YouCompleteMe config File
-let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/examples/.ycm_extra_conf.py'
+let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
 let g:ycm_confirm_extra_conf = 0
 
 " Tweaking the 'super' button
