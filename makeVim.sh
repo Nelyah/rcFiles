@@ -8,8 +8,14 @@ sudo apt-get install libncurses5-dev libgnome2-dev libgnomeui-dev \
 sudo apt-get remove vim vim-runtime gvim
 
 mkdir -p makeVim/ && cd makeVim
-git clone https://github.com/vim/vim.git
-cd vim
+if [[ -d vim/ ]];
+then 
+    cd vim/
+    git pull
+else
+    git clone https://github.com/vim/vim.git
+    cd vim
+fi
 ./configure --with-features=huge \
    --enable-multibyte \
    --enable-rubyinterp \
