@@ -7,7 +7,6 @@ sudo apt-get install libncurses5-dev libgnome2-dev libgnomeui-dev \
 
 sudo apt-get remove vim vim-runtime gvim
 
-mkdir -p makeVim/ && cd makeVim
 if [[ -d vim/ ]];
 then 
     cd vim/
