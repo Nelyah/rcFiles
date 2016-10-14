@@ -1,51 +1,51 @@
 [submodule "vim/bundle/coquille"]
-	path = vim/bundle/coquille
+	path = vimPlug/bundle/coquille
 	url = https://github.com/the-lambda-church/coquille.git
 [submodule "vim/bundle/ctrlp.vim"]
-	path = vim/bundle/ctrlp.vim
+	path = vimPlug/bundle/ctrlp.vim
 	url = https://github.com/kien/ctrlp.vim.git
 [submodule "vim/bundle/delimitMate"]
-	path = vim/bundle/delimitMate
+	path = vimPlug/bundle/delimitMate
 	url = https://github.com/Raimondi/delimitMate.git
 [submodule "vim/bundle/i3-vim-syntax"]
-	path = vim/bundle/i3-vim-syntax
+	path = vimPlug/bundle/i3-vim-syntax
 	url = https://github.com/PotatoesMaster/i3-vim-syntax.git
 [submodule "vim/bundle/indentLine"]
-	path = vim/bundle/indentLine
+	path = vimPlug/bundle/indentLine
 	url = https://github.com/Yggdroot/indentLine.git
 [submodule "vim/bundle/nerdtree"]
-	path = vim/bundle/nerdtree
+	path = vimPlug/bundle/nerdtree
 	url = https://github.com/scrooloose/nerdtree.git
 [submodule "vim/bundle/SimpylFold"]
-	path = vim/bundle/SimpylFold
+	path = vimPlug/bundle/SimpylFold
 	url = https://github.com/tmhedberg/SimpylFold.git
 [submodule "vim/bundle/syntastic"]
-	path = vim/bundle/syntastic
+	path = vimPlug/bundle/syntastic
 	url = https://github.com/scrooloose/syntastic.git
 [submodule "vim/bundle/tagbar.wiki"]
-	path = vim/bundle/tagbar.wiki
+	path = vimPlug/bundle/tagbar.wiki
 	url = https://github.com/majutsushi/tagbar.wiki.git
 [submodule "vim/bundle/vimbufsync"]
-	path = vim/bundle/vimbufsync
+	path = vimPlug/bundle/vimbufsync
 	url = https://github.com/def-lkb/vimbufsync.git
 [submodule "vim/bundle/vim-expand-region"]
-	path = vim/bundle/vim-expand-region
+	path = vimPlug/bundle/vim-expand-region
 	url = https://github.com/terryma/vim-expand-region.git
 [submodule "vim/bundle/vim-misc"]
-	path = vim/bundle/vim-misc
+	path = vimPlug/bundle/vim-misc
 	url = https://github.com/xolox/vim-misc.git
 [submodule "vim/bundle/vim-multiple-cursors"]
-	path = vim/bundle/vim-multiple-cursors
+	path = vimPlug/bundle/vim-multiple-cursors
 	url = https://github.com/terryma/vim-multiple-cursors.git
 [submodule "vim/bundle/vim-notes"]
-	path = vim/bundle/vim-notes
+	path = vimPlug/bundle/vim-notes
 	url = https://github.com/xolox/vim-notes.git
 [submodule "vim/bundle/--force"]
-	path = vim/bundle/--force
+	path = vimPlug/bundle/--force
 	url = https://github.com/garbas/vim-snipmate.git
 [submodule "vim/bundle/YouCompleteMe"]
-	path = vim/bundle/YouCompleteMe
+	path = vimPlug/bundle/YouCompleteMe
 	url = https://github.com/Valloric/YouCompleteMe.git
 [submodule "vim/bundle/tagbar"]
-	path = vim/bundle/tagbar
+	path = vimPlug/bundle/tagbar
 	url = git://github.com/majutsushi/tagbar
