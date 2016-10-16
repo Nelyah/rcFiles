@@ -22,8 +22,9 @@ fi
    --with-python-config-dir=/usr/lib/python2.7/config \
    --enable-perlinterp \
    --enable-luainterp \
+   --with-lua-prefix=/usr/include/lua5.3 \
    --enable-gui=gtk2 --enable-cscope --prefix=/usr
-   make VIMRUNTIMEDIR=/usr/share/vim/vim74
+   make 
    sudo make install
 
 sudo update-alternatives --install /usr/bin/editor editor /usr/bin/vim 1

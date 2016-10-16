@@ -1,49 +1,47 @@
-execute pathogen#infect()
-execute pathogen#helptags()
+"dein Scripts-----------------------------
+set nocompatible               " Be iMproved
 
-""""""""""""""""""""""""""""""""""""""""""
-" Basic features
-""""""""""""""""""""""""""""""""""""""""""
-
-"NeoBundle Scripts-----------------------------
-if &compatible
-  set nocompatible               " Be iMproved
-endif
 
 " Required:
-set runtimepath+=/home/chloe/.vim/bundle/neobundle.vim/
+set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim
 
 " Required:
-call neobundle#begin(expand('/home/chloe/.vim/bundle'))
+call dein#begin(expand('~/.vim/dein')) " plugins' root path
 
-" Let NeoBundle manage NeoBundle
+" Let dein manage dein
 " Required:
-NeoBundleFetch 'Shougo/neobundle.vim'
+call dein#add('Shougo/dein.vim')
+call dein#add('Shougo/vimproc.vim', {'build': 'make'})
+call dein#add('Valloric/YouCompleteMe')
+call dein#add('Shougo/unite.vim')
+call dein#add('Shougo/neosnippet.vim')
+call dein#add('Shougo/neosnippet-snippets')
+call dein#add('the-lambda-church/coquille')
+"call dein#add('kien/ctrlp.vim')
+call dein#add('Raimondi/delimitMate')
+call dein#add('PotatoesMaster/i3-vim-syntax')
+call dein#add('Yggdroot/indentLine')
+call dein#add('scrooloose/nerdtree')
+call dein#add('tmhedberg/SimpylFold')
+call dein#add('scrooloose/syntastic')
+call dein#add('majutsushi/tagbar')
+call dein#add('def-lkb/vimbufsync')
+call dein#add('terryma/vim-expand-region')
+call dein#add('xolox/vim-misc')
+call dein#add('terryma/vim-multiple-cursors')
+call dein#add('xolox/vim-notes')
+call dein#add('marcweber/vim-addon-mw-utils')
+call dein#add('tomtom/tlib_vim')
+call dein#add('garbas/vim-snipmate')
+call dein#add('majutsushi/tagbar')
 
-" Add or remove your Bundles here:
-NeoBundle 'Shougo/neosnippet.vim'
-NeoBundle 'Shougo/neosnippet-snippets'
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'ctrlpvim/ctrlp.vim'
-NeoBundle 'flazz/vim-colorschemes'
-
-" You can specify revision/branch/tag.
-NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
-
-" Required:
-call neobundle#end()
-
-" Required:
-filetype plugin indent on
-
-" If there are uninstalled bundles found on startup,
-" this will conveniently prompt you to install them.
-NeoBundleCheck
-"End NeoBundle Scripts-------------------------
-
+" and a lot more plugins.....
+"
+call dein#end()
 
 syntax on
-set nocompatible
+syntax enable
+"set nocompatible
 set incsearch           " search as characters are entered
 set hlsearch            " highlight matches
 set number              " line numbers"
@@ -70,14 +68,14 @@ noremap k j
 noremap j h
 noremap gV `[V`]
 
-nnoremap <C-j> <C-w>j 
+nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 nnoremap <C-m> <C-w>m
 
 " YouCompleteMe config File
 let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
-let g:ycm_confirm_extra_conf = 0
+" let g:ycm_confirm_extra_conf = 0
 
 " Tweaking the 'super' button
 let mapleader = "\<Space>"
@@ -103,12 +101,14 @@ omap s :normal vs<CR>
 " pops Tagbar
 nmap <F8> :TagbarToggle<CR>
 
+filetype on
 filetype plugin on
+filetype plugin indent on
 set backspace=indent,eol,start
 
-autocmd VimEnter * WatchForChanges
-let autoreadargs={'autoread':1} 
-"execute WatchForChanges("*",autoreadargs) 
+"autocmd VimEnter * WatchForChanges
+let autoreadargs={'autoread':1}
+"execute WatchForChanges("*",autoreadargs)
 
 " Color scheme
 colorscheme ir_black
@@ -135,6 +135,6 @@ endfunction
 vmap <silent> <expr> p <sid>Repl()
 
 " Using snipmate with YCM - not working yet
-let g:UltiSnipsExpandTrigger="<c-j>"
-let g:UltiSnipsJumpForwardTrigger="<c-j>"
-let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+"let g:UltiSnipsExpandTrigger="<c-j>"
+"let g:UltiSnipsJumpForwardTrigger="<c-j>"
+"let g:UltiSnipsJumpBackwardTrigger="<c-k>"
