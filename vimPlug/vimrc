@@ -14,8 +14,10 @@ call dein#add('Shougo/dein.vim')
 call dein#add('Shougo/vimproc.vim', {'build': 'make'})
 call dein#add('Valloric/YouCompleteMe')
 call dein#add('Shougo/unite.vim')
-call dein#add('Shougo/neosnippet.vim')
-call dein#add('Shougo/neosnippet-snippets')
+call dein#add('vim-airline/vim-airline')
+call dein#add('vim-airline/vim-airline-themes')
+"call dein#add('Shougo/neosnippet.vim')
+"call dein#add('Shougo/neosnippet-snippets')
 call dein#add('the-lambda-church/coquille')
 "call dein#add('kien/ctrlp.vim')
 call dein#add('Raimondi/delimitMate')
@@ -24,6 +26,8 @@ call dein#add('Yggdroot/indentLine')
 call dein#add('scrooloose/nerdtree')
 call dein#add('tmhedberg/SimpylFold')
 call dein#add('scrooloose/syntastic')
+call dein#add('tpope/vim-surround')
+call dein#add('tpope/vim-fugitive')
 call dein#add('majutsushi/tagbar')
 call dein#add('def-lkb/vimbufsync')
 call dein#add('terryma/vim-expand-region')
@@ -40,7 +44,6 @@ call dein#add('majutsushi/tagbar')
 call dein#end()
 
 syntax on
-syntax enable
 "set nocompatible
 set incsearch           " search as characters are entered
 set hlsearch            " highlight matches
@@ -50,6 +53,11 @@ set autoread            " reload automatically a file if not changed
 
 " completion highlight
 :highlight Pmenu guibg=brown gui=bold
+
+" Airline Plugin
+let g:airline_theme = 'bubblegum'
+let g:airline#extensions#tabline#enabled = 1
+set laststatus=2
 
 " Tab spec
 set tabstop=4
@@ -103,7 +111,6 @@ nmap <F8> :TagbarToggle<CR>
 
 filetype on
 filetype plugin on
-filetype plugin indent on
 set backspace=indent,eol,start
 
 "autocmd VimEnter * WatchForChanges
