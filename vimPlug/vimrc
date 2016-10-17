@@ -50,9 +50,8 @@ set hlsearch            " highlight matches
 set number              " line numbers"
 set autoindent
 set autoread            " reload automatically a file if not changed
+set magic               " For regex
 
-" completion highlight
-:highlight Pmenu guibg=brown gui=bold
 
 " Airline Plugin
 let g:airline_theme = 'bubblegum'
@@ -119,6 +118,8 @@ let autoreadargs={'autoread':1}
 
 " Color scheme
 colorscheme ir_black
+" completion highlight
+highlight Pmenu ctermbg=4
 
 " Maps Coquille commands to <F2> (Undo), <F3> (Next), <F4> (ToCursor)
 au FileType coq call coquille#FNMapping()
