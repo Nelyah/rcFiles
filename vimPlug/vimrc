@@ -16,6 +16,7 @@ call dein#add('Valloric/YouCompleteMe')
 call dein#add('Shougo/unite.vim')
 call dein#add('vim-airline/vim-airline')
 call dein#add('vim-airline/vim-airline-themes')
+call dein#add('tpope/vim-commentary')
 "call dein#add('Shougo/neosnippet.vim')
 "call dein#add('Shougo/neosnippet-snippets')
 call dein#add('the-lambda-church/coquille')
@@ -75,10 +76,10 @@ noremap k j
 noremap j h
 noremap gV `[V`]
 
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
-nnoremap <C-m> <C-w>m
+nnoremap <C-j> <C-w>h
+nnoremap <C-k> <C-w>j
+nnoremap <C-l> <C-w>k
+nnoremap <C-m> <C-w>l
 
 " YouCompleteMe config File
 let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
