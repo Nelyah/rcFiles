@@ -1,6 +1,6 @@
 #! /bin/bash
 
-git submodule foreach git pull origin master
+#git submodule foreach git pull origin master
 rm -rf ~/.vim/ 
 mkdir ~/.vim/
 cp -r vimPlug/* ~/.vim/
