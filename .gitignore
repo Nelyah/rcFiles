@@ -1,1 +1,5 @@
 vim/
+.*.swp
+*/.*.swp
+.*.swo
+*/.*.swo

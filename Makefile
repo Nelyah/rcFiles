@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-install:
+vim:
 	sudo apt-get install libncurses5-dev libgnome2-dev libgnomeui-dev \
 			libgtk2.0-dev libatk1.0-dev libbonoboui2-dev \
 			libcairo2-dev libx11-dev libxpm-dev libxt-dev python-dev \
@@ -25,7 +25,7 @@ install:
 	   --enable-perlinterp \
 	   --enable-luainterp \
 	   --enable-gui=gtk2 --enable-cscope --prefix=/usr
-	   make VIMRUNTIMEDIR=/usr/share/vim/vim74
+	   make VIMRUNTIMEDIR=/usr/share/vim/vim80
 	   sudo make install
 
 	sudo update-alternatives --install /usr/bin/editor editor /usr/bin/vim 1
@@ -33,11 +33,13 @@ install:
 	sudo update-alternatives --install /usr/bin/vi vi /usr/bin/vim 1
 	sudo update-alternatives --set vi /usr/bin/vim
 
-config:
-	git submodule init
-	git submodule sync
-	git submodule update
-	git submodule foreach git submodule update --init --recursive
+setup:
+	cp bashrc ${HOME}/.bashrc
+	cp dircolors ${HOME}/.dircolors
+	cp gitconfig ${HOME}/.gitconfig
+	cp -r i3/ ${HOME}/.i3
+	cp i3status.conf ${HOME}/i3status.conf
+	cp screenrc ${HOME}/screenrc
 
 
 update:
