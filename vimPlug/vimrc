@@ -17,14 +17,16 @@ call dein#add('Shougo/unite.vim')
 call dein#add('vim-airline/vim-airline')
 call dein#add('vim-airline/vim-airline-themes')
 call dein#add('tpope/vim-commentary')
+call dein#add('airblade/vim-gitgutter')
 "call dein#add('Shougo/neosnippet.vim')
 "call dein#add('Shougo/neosnippet-snippets')
 call dein#add('the-lambda-church/coquille')
-"call dein#add('kien/ctrlp.vim')
+call dein#add('kien/ctrlp.vim')
 call dein#add('Raimondi/delimitMate')
 call dein#add('PotatoesMaster/i3-vim-syntax')
 call dein#add('Yggdroot/indentLine')
 call dein#add('scrooloose/nerdtree')
+call dein#add('Xuyuanp/nerdtree-git-plugin')
 call dein#add('tmhedberg/SimpylFold')
 call dein#add('scrooloose/syntastic')
 call dein#add('tpope/vim-surround')
@@ -34,7 +36,6 @@ call dein#add('def-lkb/vimbufsync')
 call dein#add('terryma/vim-expand-region')
 call dein#add('xolox/vim-misc')
 call dein#add('terryma/vim-multiple-cursors')
-call dein#add('xolox/vim-notes')
 call dein#add('marcweber/vim-addon-mw-utils')
 call dein#add('tomtom/tlib_vim')
 call dein#add('garbas/vim-snipmate')
@@ -43,6 +44,8 @@ call dein#add('majutsushi/tagbar')
 " and a lot more plugins.....
 "
 call dein#end()
+
+set hidden
 
 syntax on
 "set nocompatible
@@ -59,6 +62,13 @@ let g:airline_theme = 'bubblegum'
 let g:airline#extensions#tabline#enabled = 1
 set laststatus=2
 
+"""""""""""""""""""""""""""
+" Basic VIM modifications "
+"""""""""""""""""""""""""""
+
+" mapping the 'super' button on space
+let mapleader = "\<Space>"
+
 " Tab spec
 set tabstop=4
 set expandtab
@@ -68,6 +78,11 @@ set ignorecase
 set showmode            " Show the editing mode on last line
 set t_Co=256
 set encoding=utf-8
+
+
+filetype on
+filetype plugin on
+set backspace=indent,eol,start
 
 " Some remaps
 noremap m l
@@ -81,58 +96,76 @@ nnoremap <C-k> <C-w>j
 nnoremap <C-l> <C-w>k
 nnoremap <C-m> <C-w>l
 
-" YouCompleteMe config File
-let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
-" let g:ycm_confirm_extra_conf = 0
-
-" Tweaking the 'super' button
-let mapleader = "\<Space>"
-nnoremap <Leader>o :CtrlP<CR>
-nnoremap <Leader>w :w<CR>
-nmap <Leader><Leader> V
-vmap v <Plug>(expand_region_expand)
-vmap <C-v> <Plug>(expand_region_shrink)
-" Turn off highlight after search
-nnoremap <Leader>a :noh<return><CR>
 
 " Stupid window...
 map q: :q
-autocmd CompleteDone * pclose
 
-" Search and replace : I can use
-" /something to search it, then cs to replace
-" then <Esc>, then n.n. etc. for repeating
-vnoremap <silent> s //e<C-r>=&selection=='exclusive'?'+1':''<CR><CR>
-    \:<C-u>call histdel('search',-1)<Bar>let @/=histget('search',-1)<CR>gv
-omap s :normal vs<CR>
+" Buffers 
+""""""""""
+" Move to the previous buffer with "gp"
+nnoremap <Leader>j :bp<CR>
+" Move to the next buffer with "gn"
+nnoremap <Leader>m :bn<CR>
+" List all possible buffers with "gl"
+nnoremap gl :ls<CR>
+" List all possible buffers with "gb" and accept a new buffer argument [1]
+nnoremap gb :ls<CR>:b
+" Close the current buffer and move to the previous one
+" This replicates the idea of closing a tab
+nmap <Leader>q :bp <BAR> bd #<CR>
+""""""""
+""""""""
 
-" pops Tagbar
-nmap <F8> :TagbarToggle<CR>
-
-filetype on
-filetype plugin on
-set backspace=indent,eol,start
-
-"autocmd VimEnter * WatchForChanges
-let autoreadargs={'autoread':1}
-"execute WatchForChanges("*",autoreadargs)
+" Save with space-w
+nnoremap <Leader>w :w<CR>
 
 " Color scheme
 colorscheme ir_black
 " completion highlight
 highlight Pmenu ctermbg=4
 
+"""""""""""""""""""""""""""
+"""""""""""""""""""""""""""
+"        PLUGINS          "
+"""""""""""""""""""""""""""
+"""""""""""""""""""""""""""
+
+"""""""""""""""""""
+" YOU COMPLETE ME "
+"""""""""""""""""""
+" config File
+let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
+" let g:ycm_confirm_extra_conf = 0
+
+
+nnoremap <Leader>o :CtrlP<CR>
+nmap <Leader><Leader> V
+vmap v <Plug>(expand_region_expand)
+vmap <C-v> <Plug>(expand_region_shrink)
+" Turn off highlight after search
+nnoremap <Leader>a :noh<return><CR>
+
+autocmd CompleteDone * pclose
+
+" pops Tagbar
+nmap <F8> :TagbarToggle<CR>
+
+"autocmd VimEnter * WatchForChanges
+"let autoreadargs={'autoread':1}
+"execute WatchForChanges("*",autoreadargs)
+
+
 " Maps Coquille commands to <F2> (Undo), <F3> (Next), <F4> (ToCursor)
 au FileType coq call coquille#FNMapping()
-
-
-"Python doc
-nnoremap <buffer> K :<C-u>execute "!pydoc " . expand("<cword>")<CR>
 
 "Python folding plugin : To be able to read doc
 let g:SimpylFold_docstring_preview = 1
 
-" vp doesn't replace paste buffer
+"""""""""""""""""""
+" Useful function "
+"""""""""""""""""""
+
+" pasting doesn't replace paste buffer
 function! RestoreRegister()
     let @" = s:restore_reg"
     return ''
@@ -147,3 +180,6 @@ vmap <silent> <expr> p <sid>Repl()
 "let g:UltiSnipsExpandTrigger="<c-j>"
 "let g:UltiSnipsJumpForwardTrigger="<c-j>"
 "let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+
+"""""""""""""""""""""""""""
+"""""""""""""""""""""""""""
