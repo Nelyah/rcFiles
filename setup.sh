@@ -22,19 +22,19 @@ fi
 
 
 setup_bashrc () {
-    cp bashrc ${HOME}/.bashrc
+    cp confFiles/bashrc ${HOME}/.bashrc
 }
 
 setup_screenrc () {
-    cp screenrc ${HOME}/.screenrc
+    cp confFiles/screenrc ${HOME}/.screenrc
 }
 
 setup_gitconfig () {
-    cp gitconfig ${HOME}/.gitconfig
+    cp confFiles/gitconfig ${HOME}/.gitconfig
 }
 
 setup_dircolors () {
-    cp dircolors ${HOME}/.dircolors
+    cp confFiles/dircolors ${HOME}/.dircolors
 }
 
 setup_rcFiles () {
