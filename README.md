@@ -7,7 +7,7 @@ I therefore highly suggest you to at least take a look at the script and look at
 
 ##The setup.sh script works as follow :
 It takes any number of arguments, each argument having a different effect :
-- vim : This will install vim, replace your .vimrc, use dein as a plugin manager, install and/or update the plugins specified in the .vimrc. If YCM is installed, it will be compiled as well
+- vim : This will install vim, replace your .vimrc, use dein as a plugin manager, install and/or update the plugins specified in the .vimrc. If YCM is installed, it will be compiled as well. If the script `setup.sh` is run as root, vim will be cloned and compiled from source, then installed.
 - bashrc : Copy the bashrc file to your HOME directory
 - screenrc : Copy the screenrc file to your HOME directory
 - dircolors : Copy the dircolors file to your HOME directory
