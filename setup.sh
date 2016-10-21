@@ -16,102 +16,40 @@ then
     echo    # (optional) move to a new line
     if [[ $REPLY =~ ^[Yy]$ ]]
     then
-        echo "coucou !"
+        setup_all
     fi
 fi
 
-echo $#
-while [[ $# -ge 1 ]];
-do
-    arg=$1
-    case $arg in 
-        vim) 
-            echo "do vim"
-            shift
-        ;;
-        bashrc) 
-            echo "do bashrc"
-            shift
-        ;;
-        screenrc) 
-            echo "do screenrc"
-            shift
-        ;;
-        dircolors) 
-            echo "do dircolors"
-            shift
-        ;;
-        gitconfig) 
-            echo "do gitconfig"
-            shift
-        ;;
-        rcFiles) 
-            echo "do rcFiles"
-            shift
-        ;;
-        i3)
-            echo "do i3"
-            shift
-        ;;
-    esac
-done
 
+setup_bashrc () {
+    cp bashrc ${HOME}/.bashrc
+}
 
-setup_vim () {
+setup_screenrc () {
+    cp screenrc ${HOME}/.screenrc
+}
 
-    # check git command. Mandatory for the plugin manager
-    if type git ; 
-    then
-      : # You have git command. No Problem.
-    else
-      echo 'Please install git or update your path to include the git executable!'
-      exit 1
-    fi
-    case $OS in
-    Linux)
-        sudo apt-get install libncurses5-dev libgnome2-dev libgnomeui-dev \
-                libgtk2.0-dev libatk1.0-dev libbonoboui2-dev \
-                libcairo2-dev libx11-dev libxpm-dev libxt-dev python-dev \
-                ruby-dev git
+setup_gitconfig () {
+    cp gitconfig ${HOME}/.gitconfig
+}
 
-        sudo apt-get remove vim vim-runtime gvim
+setup_dircolors () {
+    cp dircolors ${HOME}/.dircolors
+}
 
-        if [[ -d vim/ ]];
-        then 
-            cd vim/
-            git pull
-        else
-            git clone https://github.com/vim/vim.git
-            cd vim
-        fi
-        ./configure --with-features=huge \
-           --enable-multibyte \
-           --enable-rubyinterp \
-           --enable-pythoninterp \
-           --with-python-config-dir=/usr/lib/python2.7/config \
-           --enable-perlinterp \
-           --enable-luainterp \
-           --with-lua-prefix=/usr/include/lua5.3 \
-           --enable-gui=gtk2 --enable-cscope --prefix=/usr
-           make VIMRUNTIMEDIR=/usr/share/vim/vim80
-           sudo make install
+setup_rcFiles () {
+    echo -n "Setting up rc files..."
+    setup_bashrc
+    setup_screenrc
+    setup_gitconfig
+    setup_dircolors
+    echo " Done."
+}
 
-        sudo update-alternatives --install /usr/bin/editor editor /usr/bin/vim 1
-        sudo update-alternatives --set editor /usr/bin/vim
-        sudo update-alternatives --install /usr/bin/vi vi /usr/bin/vim 1
-        sudo update-alternatives --set vi /usr/bin/vim
-    ;;
-    Darwin)
-        if type vim ;
-        then
-            brew install vim
-        else
-            brew upgrade vim
-        fi
-    ;;
-    esac
+vim_dein () {
     PLUGIN_DIR=${HOME}/.vim/dein/
     INSTALL_DIR="${PLUGIN_DIR}/repos/github.com/Shougo/dein.vim"
+
     if [ -e "$INSTALL_DIR" ]; then
         echo "\"$INSTALL_DIR\" already exists!"
     else
@@ -130,18 +68,152 @@ setup_vim () {
         sed -Ei "s|(set\ runtimepath\+=).*$|\1${INSTALL_DIR}|" vimPlug/vimrc
         ;;
     esac
+
+    echo $(pwd)
     cp vimPlug/vimrc ${HOME}/.vim/
-    ln -s ${HOME}/.vim/vimrc ${HOME}/.vimrc
+    
+    if [[ ! -L ${HOME}/.vimrc ]];
+    then
+        ln -s ${HOME}/.vim/vimrc ${HOME}/.vimrc
+    fi
+
+    vim -E -s dummy.out <<-EOF
+    :call dein#install()
+    :call dein#update()
+    :quit
+EOF
 
     if [[ ! -z $(grep "Valloric/YouCompleteMe" vimPlug/vimrc) ]];
     then 
-    #    echo "YouCompleteMe is installed"
-    #    echo "Compiling YCM ..."
-    #    cd ~/.vim/dein/repos/github.com/Valloric/YouCompleteMe/
-    #    ./install.py --clang-completer
-    #    cd $OLDPWD
-        :
-    else
-        : #echo paspouet
+        echo "YouCompleteMe is installed"
+        echo -n "Copying the YCM config file into ${HOME}/.vim/.ycm_extra_conf.py..."
+        cp vimPlug/.ycm_extra_conf.py ${HOME}/.vim/
+        echo " Done."
+        echo "Compiling YCM ..."
+        cd ~/.vim/dein/repos/github.com/Valloric/YouCompleteMe/
+        ./install.py --clang-completer
+        cd $OLDPWD
     fi
+
 }
+
+setup_vim () {
+    
+    echo "Setting up vim..."
+
+    # check git command. Mandatory for the plugin manager
+    if type git ; 
+    then
+      : # You have git command. No Problem.
+    else
+      echo 'Please install git or update your path to include the git executable!'
+      exit 1
+    fi
+
+    case $OS in
+    Linux)
+        if [[ $(whoami) == "root" ]];
+        then
+            sudo apt-get install libncurses5-dev libgnome2-dev libgnomeui-dev \
+                    libgtk2.0-dev libatk1.0-dev libbonoboui2-dev \
+                    libcairo2-dev libx11-dev libxpm-dev libxt-dev python-dev \
+                    ruby-dev lua5.3 liblua5.3-dev liblua5.3-0 git
+
+            sudo apt-get remove vim vim-runtime gvim
+
+            if [[ -d vim/ ]];
+            then 
+                cd vim/
+                git pull
+            else
+                git clone https://github.com/vim/vim.git
+                cd vim
+            fi
+            ./configure --with-features=huge \
+               --enable-multibyte \
+               --enable-rubyinterp \
+               --enable-pythoninterp \
+               --with-python-config-dir=/usr/lib/python2.7/config \
+               --enable-perlinterp \
+               --enable-luainterp \
+               --with-lua-prefix=/usr/include/lua5.3 \
+               --enable-gui=gtk2 --enable-cscope --prefix=/usr
+               make VIMRUNTIMEDIR=/usr/share/vim/vim80
+               sudo make install
+
+            sudo update-alternatives --install /usr/bin/editor editor /usr/bin/vim 1
+            sudo update-alternatives --set editor /usr/bin/vim
+            sudo update-alternatives --install /usr/bin/vi vi /usr/bin/vim 1
+            sudo update-alternatives --set vi /usr/bin/vim
+            cd $OLDPWD
+        else
+            echo "Please run the vim setup as root if you want to install it."
+            echo ""
+        fi
+    ;;
+    Darwin)
+        if type vim ;
+        then
+            echo -n "Vim is not installed yet, installing via homebrew..."
+            brew install vim
+            echo " Done."
+        else
+            echo -n "Vim already installed. Upgrading via homebrew..."
+            brew upgrade vim
+            echo " Done."
+        fi
+    ;;
+    esac
+
+    echo -n "Setting the color theme directory in vim..."
+    mkdir -p ${HOME}/.vim/
+    cp -r vimPlug/colors/ ${HOME}/.vim/
+    echo " Done."
+
+    echo "Setting up dein plugin manager..." 
+    vim_dein
+    echo "Done."
+
+}
+
+setup_all () {
+    setup_vim
+    setup_rcFiles
+}
+
+
+echo $#
+while [[ $# -ge 1 ]];
+do
+    arg=$1
+    case $arg in 
+        vim) 
+            setup_vim
+            shift
+        ;;
+        bashrc) 
+            setup_bashrc
+            shift
+        ;;
+        screenrc) 
+            setup_screenrc
+            shift
+        ;;
+        dircolors) 
+            setup_dircolors
+            shift
+        ;;
+        gitconfig) 
+            setup_gitconfig
+            shift
+        ;;
+        rcFiles) 
+            setup_rcFiles
+            shift
+        ;;
+        i3)
+            echo "do i3"
+            shift
+        ;;
+    esac
+done
