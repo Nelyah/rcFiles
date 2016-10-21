@@ -71,7 +71,7 @@ vim_dein () {
 
     echo $(pwd)
     cp vimPlug/vimrc ${HOME}/.vim/
-    
+
     if [[ ! -L ${HOME}/.vimrc ]];
     then
         ln -s ${HOME}/.vim/vimrc ${HOME}/.vimrc
@@ -84,7 +84,7 @@ vim_dein () {
 EOF
 
     if [[ ! -z $(grep "Valloric/YouCompleteMe" vimPlug/vimrc) ]];
-    then 
+    then
         echo "YouCompleteMe is installed"
         echo -n "Copying the YCM config file into ${HOME}/.vim/.ycm_extra_conf.py..."
         cp vimPlug/.ycm_extra_conf.py ${HOME}/.vim/
@@ -98,11 +98,11 @@ EOF
 }
 
 setup_vim () {
-    
+
     echo "Setting up vim..."
 
     # check git command. Mandatory for the plugin manager
-    if type git ; 
+    if type git ;
     then
       : # You have git command. No Problem.
     else
@@ -122,7 +122,7 @@ setup_vim () {
             sudo apt-get remove vim vim-runtime gvim
 
             if [[ -d vim/ ]];
-            then 
+            then
                 cd vim/
                 git pull
             else
@@ -170,7 +170,7 @@ setup_vim () {
     cp -r vimPlug/colors/ ${HOME}/.vim/
     echo " Done."
 
-    echo "Setting up dein plugin manager..." 
+    echo "Setting up dein plugin manager..."
     vim_dein
     echo "Done."
 
@@ -186,28 +186,28 @@ echo $#
 while [[ $# -ge 1 ]];
 do
     arg=$1
-    case $arg in 
-        vim) 
+    case $arg in
+        vim)
             setup_vim
             shift
         ;;
-        bashrc) 
+        bashrc)
             setup_bashrc
             shift
         ;;
-        screenrc) 
+        screenrc)
             setup_screenrc
             shift
         ;;
-        dircolors) 
+        dircolors)
             setup_dircolors
             shift
         ;;
-        gitconfig) 
+        gitconfig)
             setup_gitconfig
             shift
         ;;
-        rcFiles) 
+        rcFiles)
             setup_rcFiles
             shift
         ;;
