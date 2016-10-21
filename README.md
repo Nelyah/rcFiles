@@ -13,3 +13,5 @@ It takes any number of arguments, each argument having a different effect :
 - dircolors : Copy the dircolors file to your HOME directory
 - gitconfig : Copy the gitconfig file to your HOME directory
 - rcFiles : Copy the following files to your HOME directory : bashrc, screenrc, dircolors, gitconfig
+
+For a complete setup, you might want to run the command `./setup.sh vim rcFiles`
