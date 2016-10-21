@@ -161,6 +161,11 @@ au FileType coq call coquille#FNMapping()
 "Python folding plugin : To be able to read doc
 let g:SimpylFold_docstring_preview = 1
 
+" Git plugin
+"""""""""""""
+set diffopt+=vertical
+
+
 """""""""""""""""""
 " Useful function "
 """""""""""""""""""
