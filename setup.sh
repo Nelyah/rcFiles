@@ -120,46 +120,53 @@ setup_vim () {
                     ruby-dev lua5.3 liblua5.3-dev liblua5.3-0 git
 
             sudo apt-get remove vim vim-runtime gvim
+        fi
 
-            if [[ -d vim/ ]];
-            then
-                cd vim/
-                git pull
-            else
-                git clone https://github.com/vim/vim.git
-                cd vim
-            fi
-            ./configure --with-features=huge \
-               --enable-multibyte \
-               --enable-rubyinterp \
-               --enable-pythoninterp \
-               --with-python-config-dir=/usr/lib/python2.7/config \
-               --enable-perlinterp \
-               --enable-luainterp \
-               --with-lua-prefix=/usr/include/lua5.3 \
-               --enable-gui=gtk2 --enable-cscope --prefix=/usr
-               make VIMRUNTIMEDIR=/usr/share/vim/vim80
-               sudo make install
+        if [[ -d vim/ ]];
+        then
+            cd vim/
+            git pull
+        else
+            git clone https://github.com/vim/vim.git
+            cd vim
+        fi
 
-            sudo update-alternatives --install /usr/bin/editor editor /usr/bin/vim 1
-            sudo update-alternatives --set editor /usr/bin/vim
-            sudo update-alternatives --install /usr/bin/vi vi /usr/bin/vim 1
-            sudo update-alternatives --set vi /usr/bin/vim
-            cd $OLDPWD
+        # If we aren't root, then let's hope that we have the right libraries
+        # Else you may need to tweak these features
+        ./configure --with-features=huge \
+           --enable-multibyte \
+           --enable-rubyinterp \
+           --enable-pythoninterp \
+           --with-python-config-dir=/usr/lib/python2.7/config \
+           --enable-perlinterp \
+           --enable-luainterp \
+           --with-lua-prefix=/usr/include/lua5.3 \
+           --enable-gui=gtk2 --enable-cscope --prefix=/usr
+        make VIMRUNTIMEDIR=/usr/share/vim/vim80
+
+        if [[ $(whoami) == "root" ]];
+        then
+           sudo make install
+
+           sudo update-alternatives --install /usr/bin/editor editor /usr/bin/vim 1
+           sudo update-alternatives --set editor /usr/bin/vim
+           sudo update-alternatives --install /usr/bin/vi vi /usr/bin/vim 1
+           sudo update-alternatives --set vi /usr/bin/vim
         else
             echo "Please run the vim setup as root if you want to install it."
             echo ""
         fi
+        cd $OLDPWD
     ;;
     Darwin)
         if type vim ;
         then
-            echo -n "Vim is not installed yet, installing via homebrew..."
-            brew install vim
-            echo " Done."
-        else
             echo -n "Vim already installed. Upgrading via homebrew..."
             brew upgrade vim
+            echo " Done."
+        else
+            echo -n "Vim is not installed yet, installing via homebrew..."
+            brew install vim
             echo " Done."
         fi
     ;;
