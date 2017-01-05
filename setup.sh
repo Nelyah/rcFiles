@@ -77,11 +77,9 @@ vim_dein () {
         ln -s ${HOME}/.vim/vimrc ${HOME}/.vimrc
     fi
 
-    vim -E -s dummy.out <<-EOF
-    :call dein#install()
-    :call dein#update()
-    :quit
-EOF
+    vim -c "call dein#install()"
+    vim -c "call dein#update()"
+    vim -c "quit"
 
     if [[ ! -z $(grep "Valloric/YouCompleteMe" vimPlug/vimrc) ]];
     then
@@ -148,10 +146,11 @@ setup_vim () {
         then
            sudo make install
 
-           sudo update-alternatives --install /usr/bin/editor editor /usr/bin/vim 1
-           sudo update-alternatives --set editor /usr/bin/vim
-           sudo update-alternatives --install /usr/bin/vi vi /usr/bin/vim 1
-           sudo update-alternatives --set vi /usr/bin/vim
+            sudo update-alternatives --install /usr/bin/editor editor /usr/bin/vim 1
+            sudo update-alternatives --set editor /usr/bin/vim
+            sudo update-alternatives --install /usr/bin/vi vi /usr/bin/vim 1
+            sudo update-alternatives --set vi /usr/bin/vim
+            cd $SETUP_DIR
         else
             echo "Please run the vim setup as root if you want to install it."
             echo ""
