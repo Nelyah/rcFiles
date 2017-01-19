@@ -22,7 +22,14 @@ fi
 
 
 setup_bashrc () {
-    cp confFiles/bashrc ${HOME}/.bashrc
+    case $OS in
+    Linux)
+        cp confFiles/bashrc ${HOME}/.bashrc
+        ;;
+    Darwin)
+        cp confFiles/bashrc ${HOME}/.bash_profile
+        ;;
+    esac
 }
 
 setup_screenrc () {
