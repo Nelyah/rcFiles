@@ -1,49 +1,53 @@
 "dein Scripts-----------------------------
-set nocompatible               " Be iMproved
+    set nocompatible               " Be iMproved
 
 
 " Required:
-set runtimepath+=/home/chloe/.vim/dein//repos/github.com/Shougo/dein.vim
+set runtimepath+=/Users/Chloe/.vim/dein//repos/github.com/Shougo/dein.vim
+let g:dein#install_process_timeout = 300
 
 " Required:
-call dein#begin(expand('~/.vim/dein')) " plugins' root path
+if dein#load_state('/Users/Chloe/.vim/dein')
+    call dein#begin('/Users/Chloe/.vim/dein') " plugins' root path
 
 " Let dein manage dein
 " Required:
-call dein#add('Shougo/dein.vim')
-call dein#add('Shougo/vimproc.vim', {'build': 'make'})
-call dein#add('Valloric/YouCompleteMe')
-call dein#add('Shougo/unite.vim')
-call dein#add('vim-airline/vim-airline')
-call dein#add('vim-airline/vim-airline-themes')
-call dein#add('tpope/vim-commentary')
-call dein#add('airblade/vim-gitgutter')
-"call dein#add('Shougo/neosnippet.vim')
-"call dein#add('Shougo/neosnippet-snippets')
-call dein#add('the-lambda-church/coquille')
-call dein#add('kien/ctrlp.vim')
-call dein#add('Raimondi/delimitMate')
-call dein#add('PotatoesMaster/i3-vim-syntax')
-call dein#add('Yggdroot/indentLine')
-call dein#add('scrooloose/nerdtree')
-call dein#add('Xuyuanp/nerdtree-git-plugin')
-call dein#add('tmhedberg/SimpylFold')
-call dein#add('scrooloose/syntastic')
-call dein#add('tpope/vim-surround')
-call dein#add('tpope/vim-fugitive')
-call dein#add('majutsushi/tagbar')
-call dein#add('def-lkb/vimbufsync')
-call dein#add('terryma/vim-expand-region')
-call dein#add('xolox/vim-misc')
-call dein#add('terryma/vim-multiple-cursors')
-call dein#add('marcweber/vim-addon-mw-utils')
-call dein#add('tomtom/tlib_vim')
-call dein#add('garbas/vim-snipmate')
-call dein#add('majutsushi/tagbar')
+    call dein#add('Shougo/dein.vim')
+    call dein#add('Shougo/vimproc.vim', {'build': 'make'})
+    call dein#add('Valloric/YouCompleteMe')
+    call dein#add('Shougo/unite.vim')
+    call dein#add('vim-airline/vim-airline')
+    call dein#add('vim-airline/vim-airline-themes')
+    call dein#add('tpope/vim-commentary')
+    call dein#add('airblade/vim-gitgutter')
+    "call dein#add('Shougo/neosnippet.vim')
+    "call dein#add('Shougo/neosnippet-snippets')
+    call dein#add('the-lambda-church/coquille')
+    call dein#add('kien/ctrlp.vim')
+    call dein#add('Raimondi/delimitMate')
+    call dein#add('PotatoesMaster/i3-vim-syntax')
+    call dein#add('Yggdroot/indentLine')
+    call dein#add('scrooloose/nerdtree')
+    call dein#add('Xuyuanp/nerdtree-git-plugin')
+    call dein#add('tmhedberg/SimpylFold')
+    call dein#add('scrooloose/syntastic')
+    call dein#add('tpope/vim-surround')
+    call dein#add('tpope/vim-fugitive')
+    call dein#add('majutsushi/tagbar')
+    call dein#add('def-lkb/vimbufsync')
+    call dein#add('terryma/vim-expand-region')
+    call dein#add('xolox/vim-misc')
+    call dein#add('terryma/vim-multiple-cursors')
+    call dein#add('marcweber/vim-addon-mw-utils')
+    call dein#add('tomtom/tlib_vim')
+    call dein#add('garbas/vim-snipmate')
+    call dein#add('majutsushi/tagbar')
 
-" and a lot more plugins.....
-"
-call dein#end()
+    " and a lot more plugins.....
+    "
+    call dein#end()
+    call dein#save_state()
+endif
 
 set hidden
 

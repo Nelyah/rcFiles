@@ -62,10 +62,10 @@ vim_dein () {
 
     case $OS in
     Linux)
-        sed -ri "s|(set\ runtimepath\+=).*$|\1${INSTALL_DIR}|" vimPlug/vimrc
+        sed -r -i '' "s|(set\ runtimepath\+=).*$|\1${INSTALL_DIR}|" vimPlug/vimrc
         ;;
     Darwin)
-        sed -Ei "s|(set\ runtimepath\+=).*$|\1${INSTALL_DIR}|" vimPlug/vimrc
+        sed -E -i '' "s|(set\ runtimepath\+=).*$|\1${INSTALL_DIR}|" vimPlug/vimrc
         ;;
     esac
 
@@ -77,9 +77,8 @@ vim_dein () {
         ln -s ${HOME}/.vim/vimrc ${HOME}/.vimrc
     fi
 
-    vim -c "call dein#install()"
-    vim -c "call dein#update()"
-    vim -c "quit"
+    vim -c "call dein#install()|q"
+    vim -c "call dein#update()|q"
 
     if [[ ! -z $(grep "Valloric/YouCompleteMe" vimPlug/vimrc) ]];
     then
