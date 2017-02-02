@@ -70,9 +70,11 @@ vim_dein () {
     case $OS in
     Linux)
         sed -r -i '' "s|(set\ runtimepath\+=).*$|\1${INSTALL_DIR}|" vimPlug/vimrc
+        sed -r -i '' "s|@HOME@|${HOME}|" vimPlug/vimrc
         ;;
     Darwin)
         sed -E -i '' "s|(set\ runtimepath\+=).*$|\1${INSTALL_DIR}|" vimPlug/vimrc
+        sed -E -i '' "s|@HOME@|${HOME}|" vimPlug/vimrc
         ;;
     esac
 

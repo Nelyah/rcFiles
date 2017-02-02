@@ -3,12 +3,12 @@
 
 
 " Required:
-set runtimepath+=/Users/Chloe/.vim/dein//repos/github.com/Shougo/dein.vim
+set runtimepath+=@HOME@/.vim/dein//repos/github.com/Shougo/dein.vim
 let g:dein#install_process_timeout = 300
 
 " Required:
-if dein#load_state('/Users/Chloe/.vim/dein')
-    call dein#begin('/Users/Chloe/.vim/dein') " plugins' root path
+if dein#load_state('@HOME@/.vim/dein')
+    call dein#begin('@HOME@/.vim/dein') " plugins' root path
 
 " Let dein manage dein
 " Required:
