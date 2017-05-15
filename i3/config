@@ -10,17 +10,19 @@
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 # vim:filetype=i3
 
+
 set $mod Mod1
 
-exec --no-startup-id nm-applet
-exec --no-startup-id gnome-settings-daemon
-exec --no-startup-id ~/.i3/start-gnome-keyring.sh
-exec --no-startup-id feh --bg-fill /home/chloe/Pictures/wallPaper/sunset_lis.jpg
-
+#exec --no-startup-id gnome-settings-daemon
+#exec --no-startup-id ~/.config/i3/start-gnome-keyring.sh
+#exec --no-startup-id feh --bg-fill /home/chloe/.config/i3/butterfly.jpg
+#exec --no-startup-id libinput-gestures-setup restart 
+exec --no-startup-id /usr/bin/redshift
+exec_always --no-startup-id killall polybar; polybar desktop-home -c "/home/chloe/.config/i3/polybar"
 
  # Font for window titles. Willalso be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:monospace 8
+font pango:Monaco 10
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -37,13 +39,17 @@ font pango:monospace 8
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+#bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec xterm
 
 # kill focused window
 bindsym $mod+Shift+Q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec dmenu_run
+bindsym $mod+d exec "rofi -combi-modi drun,run -show combi"
+bindsym $mod+s exec rofi -dmenu -p "Google search: " | xargs -I{} xdg-open https://www.google.com/search?q={} && i3-msg [class="Firefox"] focus
+bindsym $mod+Tab exec "rofi -combi-modi drun,run -show window"
+# bindsym $mod+d exec dmenu_run
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
@@ -86,7 +92,7 @@ bindsym $mod+b focus parent
 bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
+#bindsym $mod+s layout stacking
 bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
@@ -161,32 +167,37 @@ bindsym $mod+r mode "resize"
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
-bar {
-        position top
-        status_command i3status
-        tray_output LVDS
-        colors{
-            background #232323
-            statusline #DCDCDC
-        }
-}
+#bar {
+#        position top
+#        #status_command i3status -c $HOME/.config/i3/i3status.conf
+#        #status_command i3blocks -c $HOME/.config/i3/i3blocks.conf
+#        #tray_output LVDS
+#        colors{
+#            background #232323
+#            statusline #DCDCDC
+#        }
+#}
 
-set $Locker i3lock -c 000000 -n && sleep 1
+#set $Locker i3lock -c 000000 -n && sleep 1
+set $Locker dm-tool lock
 
-set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
+set $mode_system System (l) lock, (w) switch user, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
     bindsym l exec --no-startup-id $Locker, mode "default"
     bindsym e exec --no-startup-id i3-msg exit, mode "default"
     bindsym s exec --no-startup-id $Locker && systemctl suspend, mode "default"
     bindsym h exec --no-startup-id $Locker && systemctl hibernate, mode "default"
     bindsym r exec --no-startup-id systemctl reboot, mode "default"
+    bindsym w exec --no-startup-id dm-tool switch-to-greeter, mode "default"
     bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"  
     
     # back to normal: Enter or Escape
     bindsym Return mode "default"
     bindsym Escape mode "default"
+
 }
-bindsym $mod+Pause mode "$mode_system"
+bindsym $mod+Delete exec  ~/.config/i3/i3-exit
+#bindsym $mod+Delete mode "$mode_system"
 exec --no-startup-id exec --no-startup-id  i3lock -c 000000 -n
 exec --no-startup-id xautolock -detectsleep -time 15 -locker "i3lock -c 000000 -n && sleep 1" -notify 30 -notifier "notify-send -u critical -t 10000 --  'LOCKING screend in 30 seconds'"
 exec --no-startup-id setxkbmap fr
@@ -198,13 +209,13 @@ client.urgent               #C10004 #900000 #ffffff #900000
 
 setxkbmap fr
 
-bindsym --release $mod+x exec --no-startup-id import ~/Pictures/screenshot-`/bin/date +%Y%m%d-%H:%M:%S`.png
-bindsym --release $mod+y exec --no-startup-id import -window root ~/Pictures/screenshot-`/bin/date +%Y%m%d-%H:%M:%S`.png
+bindsym --release $mod+x exec --no-startup-id import ~/Pictures/screenshots/screenshot-`/bin/date +%Y%m%d-%H:%M:%S`.png
+bindsym --release $mod+y exec --no-startup-id import -window root ~/Pictures/screenshots/screenshot-`/bin/date +%Y%m%d-%H:%M:%S`.png
 
 for_window [class="^.*"] border pixel 1
 
-bindsym $mod+o exec amixer -q set Master 2dB+ unmute
-bindsym $mod+i exec amixer -q set Master 2dB- unmute
+bindsym $mod+o exec amixer -q set Master 2%+ unmute
+bindsym $mod+i exec amixer -q set Master 2%- unmute
 #bindsym $mod+p exec amixer -q set Headphone toggle
 bindsym $mod+p exec amixer -D pulse set Master Playback Switch toggle
 
