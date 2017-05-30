@@ -18,6 +18,7 @@ set $mod Mod1
 #exec --no-startup-id feh --bg-fill /home/chloe/.config/i3/butterfly.jpg
 #exec --no-startup-id libinput-gestures-setup restart 
 exec --no-startup-id /usr/bin/redshift
+exec --no-startup-id /usr/bin/dunst
 exec_always --no-startup-id killall polybar; polybar desktop-home -c "/home/chloe/.config/i3/polybar"
 
  # Font for window titles. Willalso be used by the bar unless a different font
