@@ -2,25 +2,6 @@
 
 OS=$(uname)
 
-if [[ $# -eq 0 ]];
-then
-    echo "No argument."
-    echo "vim will be set up."
-    echo "The following config files will be set up :"
-    echo "bashrc, dircolors, gitconfig, screenrc"
-    if [[ $OS == "Linux" ]];
-    then
-        echo "i3 will be setup."
-    fi
-    read -p "Do you want to continue ? [Yy] " -r
-    echo    # (optional) move to a new line
-    if [[ $REPLY =~ ^[Yy]$ ]]
-    then
-        setup_all
-    fi
-fi
-
-
 setup_bashrc () {
     case $OS in
     Linux)
@@ -54,14 +35,17 @@ setup_rcFiles () {
 }
 
 vim_dein () {
+    echo -n "Setting the color theme directory in vim..."
+    mkdir -p ${HOME}/.vim/
+    cp -r vimPlug/colors/ ${HOME}/.vim/
+    echo " Done."
+
+    # Dein 
+    echo "Setting up dein plugin manager..."
     PLUGIN_DIR=${HOME}/.vim/dein/
     INSTALL_DIR="${PLUGIN_DIR}/repos/github.com/Shougo/dein.vim"
 
-    if [[ $# -gt 0 ]] && [[ $1 == "--YCM" ]];
-    then
-        YCM=0
-    fi
-
+    # pull the plugin manager from github
     if [ -e "$INSTALL_DIR" ]; then
         echo "\"$INSTALL_DIR\" already exists!"
     else
@@ -72,27 +56,29 @@ vim_dein () {
         echo ""
     fi
 
+    # copy the vimrc file into our .vim/ directory
+    cp vimPlug/vimrc ${HOME}/.vim/
+
+    # replace some values inside the vimrc
     case $OS in
     Linux)
-        sed -r -i "s|(set\ runtimepath\+=).*$|\1${INSTALL_DIR}|" vimPlug/vimrc
-        sed -r -i "s|@HOME@|${HOME}|" vimPlug/vimrc
+        sed -r -i "s|(set\ runtimepath\+=).*$|\1${INSTALL_DIR}|" $HOME/.vim/vimrc
+        sed -r -i "s|@HOME@|${HOME}|" $HOME/.vim/vimrc
         ;;
     Darwin)
-        sed -E -i '' "s|(set\ runtimepath\+=).*$|\1${INSTALL_DIR}|" vimPlug/vimrc
-        sed -E -i '' "s|@HOME@|${HOME}|" vimPlug/vimrc
+        sed -E -i '' "s|(set\ runtimepath\+=).*$|\1${INSTALL_DIR}|" $HOME/.vim/vimrc
+        sed -E -i '' "s|@HOME@|${HOME}|" $HOME/.vim/vimrc
         ;;
     esac
 
-    echo $(pwd)
-    cp vimPlug/vimrc ${HOME}/.vim/
-
+    # link the ~/.vim/vimrc to ~/.vimrc
     if [[ ! -L ${HOME}/.vimrc ]];
     then
         ln -s ${HOME}/.vim/vimrc ${HOME}/.vimrc
     fi
 
+    # Begin plugin installation
     vim -c "call dein#install()|q"
-    vim -c "call dein#update()|q"
 
     if [[ $YCM == 0 ]];
     then
@@ -104,124 +90,95 @@ vim_dein () {
             echo " Done."
             echo "Compiling YCM ..."
             cd ~/.vim/dein/repos/github.com/Valloric/YouCompleteMe/
-            ./install.py --clang-completer
+
+            # ARCH and manjaro users have to use system libclang
+            if [[ $ARCHL == 0 ]]
+            then 
+                ./install.py --clang-completer --system-libclang
+            else
+                ./install.py --clang-completer
+            fi
             cd $OLDPWD
         fi
     fi
 
+    vim -c "call dein#update()|q"
 }
 
-setup_vim () {
+build_vim() {
+    echo "Setting up vim..."
 
-    while [[ $# -ge 1 ]];
-    do
-        case $1 in
-        --install=*)
-            INSTALL=$(sed -r 's/--install=(.*)/\1/' <<< $1)
-            shift
-        ;;
-        --YCM=*)
-            YCM=$(sed -r 's/--YCM=(.*)/\1/' <<< $1)
-            shift
-        ;;
-        esac
-
-    done
-
-    
-
-    if [[ $INSTALL == 0 ]];
+    # check git command. Mandatory for the plugin manager
+    if type git ;
     then
-        echo "Setting up vim..."
+      : # You have git command. No Problem.
+    else
+      echo 'Please install git or update your path to include the git executable!'
+      exit 1
+    fi
 
-        # check git command. Mandatory for the plugin manager
-        if type git ;
+    case $OS in
+    Linux)
+        if [[ $(whoami) == "root" ]];
         then
-          : # You have git command. No Problem.
-        else
-          echo 'Please install git or update your path to include the git executable!'
-          exit 1
+            sudo apt-get install libncurses5-dev libgnome2-dev libgnomeui-dev \
+                    libgtk2.0-dev libatk1.0-dev libbonoboui2-dev \
+                    libcairo2-dev libx11-dev libxpm-dev libxt-dev python-dev \
+                    ruby-dev lua5.3 liblua5.3-dev liblua5.3-0 git
+
+            sudo apt-get remove vim vim-runtime gvim
         fi
 
-        case $OS in
-        Linux)
-            if [[ $(whoami) == "root" ]];
-            then
-                sudo apt-get install libncurses5-dev libgnome2-dev libgnomeui-dev \
-                        libgtk2.0-dev libatk1.0-dev libbonoboui2-dev \
-                        libcairo2-dev libx11-dev libxpm-dev libxt-dev python-dev \
-                        ruby-dev lua5.3 liblua5.3-dev liblua5.3-0 git
+        if [[ -d vim/ ]];
+        then
+            cd vim/
+            git pull
+        else
+            git clone https://github.com/vim/vim.git
+            cd vim
+        fi
 
-                sudo apt-get remove vim vim-runtime gvim
-            fi
+        # If we aren't root, then let's hope that we have the right libraries
+        # Else you may need to tweak these features
+        ./configure --with-features=huge \
+           --enable-multibyte \
+           --enable-rubyinterp \
+           --enable-pythoninterp \
+           --with-python-config-dir=/usr/lib/python2.7/config \
+           --enable-perlinterp \
+           --enable-luainterp \
+           --with-lua-prefix=/usr/include/lua5.3 \
+           --enable-gui=gtk2 --enable-cscope --prefix=/usr
+        make VIMRUNTIMEDIR=/usr/share/vim/vim80
 
-            if [[ -d vim/ ]];
-            then
-                cd vim/
-                git pull
-            else
-                git clone https://github.com/vim/vim.git
-                cd vim
-            fi
+        if [[ $(whoami) == "root" ]];
+        then
+           sudo make install
 
-            # If we aren't root, then let's hope that we have the right libraries
-            # Else you may need to tweak these features
-            ./configure --with-features=huge \
-               --enable-multibyte \
-               --enable-rubyinterp \
-               --enable-pythoninterp \
-               --with-python-config-dir=/usr/lib/python2.7/config \
-               --enable-perlinterp \
-               --enable-luainterp \
-               --with-lua-prefix=/usr/include/lua5.3 \
-               --enable-gui=gtk2 --enable-cscope --prefix=/usr
-            make VIMRUNTIMEDIR=/usr/share/vim/vim80
-
-            if [[ $(whoami) == "root" ]];
-            then
-               sudo make install
-
-                sudo update-alternatives --install /usr/bin/editor editor /usr/bin/vim 1
-                sudo update-alternatives --set editor /usr/bin/vim
-                sudo update-alternatives --install /usr/bin/vi vi /usr/bin/vim 1
-                sudo update-alternatives --set vi /usr/bin/vim
-                cd $SETUP_DIR
-            else
-                echo "Please run the vim setup as root if you want to install it."
-                echo ""
-            fi
-            cd $OLDPWD
-        ;;
-        Darwin)
-            if type vim ;
-            then
-                echo -n "Vim already installed. Upgrading via homebrew..."
-                brew upgrade vim
-                echo " Done."
-            else
-                echo -n "Vim is not installed yet, installing via homebrew..."
-                brew install vim
-                echo " Done."
-            fi
-        ;;
-        esac
-
-    fi
-
-    echo -n "Setting the color theme directory in vim..."
-    mkdir -p ${HOME}/.vim/
-    cp -r vimPlug/colors/ ${HOME}/.vim/
-    echo " Done."
-
-    echo "Setting up dein plugin manager..."
-    if [[ $YCM == 0 ]];
-    then
-        vim_dein --YCM
-    else
-        vim_dein
-    fi
-    echo "Done."
-
+            sudo update-alternatives --install /usr/bin/editor editor /usr/bin/vim 1
+            sudo update-alternatives --set editor /usr/bin/vim
+            sudo update-alternatives --install /usr/bin/vi vi /usr/bin/vim 1
+            sudo update-alternatives --set vi /usr/bin/vim
+            cd $SETUP_DIR
+        else
+            echo "Please run the vim setup as root if you want to install it."
+            echo ""
+        fi
+        cd $OLDPWD
+    ;;
+    Darwin)
+        if type vim ;
+        then
+            echo -n "Vim already installed. Upgrading via homebrew..."
+            brew upgrade vim
+            echo " Done."
+        else
+            echo -n "Vim is not installed yet, installing via homebrew..."
+            brew install vim
+            echo " Done."
+        fi
+    ;;
+    esac
 }
 
 setup_all () {
@@ -229,86 +186,136 @@ setup_all () {
     setup_rcFiles
 }
 
-SETUP_VIM=1
-VIM_INSTALL=0
-YCM=1
-SETUP_BASHRC=1
-SETUP_SCREENRC=1
-SETUP_DIRCOLORS=1
-SETUP_GITCONFIG=1
-SETUP_RCFILES=1
+setup(){
+    read -p "Are you an arch or manjaro linux user? [yN] " -n 1 -r
+    echo ""
+    if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+        ARCHL=0
+    else
+        ARCHL=1
+    fi
 
-echo $#
-while [[ $# -ge 1 ]];
-do
-    arg=$1
-    case $arg in
-        vim)
-            SETUP_VIM=0
-            shift
-        ;;
-        --no-vim-install)
-            VIM_INSTALL=1
-            shift
-        ;;
-        --YCM)
+    # VIM BUILD
+    ##################
+    read -p "Do you want to build vim from source (ubuntu only)? [yN] " -n 1 -r
+    echo ""
+    if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+        VIM_BUILD=0
+    else
+        VIM_BUILD=1
+        echo "Assuming vim installed."
+    fi
+    
+    # VIM PLUGIN SETUP
+    ##################
+    read -p "Do you want to setup vim plugins? [yN] " -n 1 -r
+    echo ""
+    if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+        VIM_PLUG=0
+        read -p "Do you want to also install YCM? [yN] " -n 1 -r
+        echo ""
+        if [[ $REPLY =~ ^[Yy]$ ]]
+        then
             YCM=0
-            shift
-        ;;
-        bashrc)
+        else
+            YCM=1
+        fi
+    else
+        VIM_PLUG=1
+    fi
+
+    # RC FILES
+    ##################
+    read -p "Do you want to setup all rc files? (.bashrc, .dircolors, screenrc, gitconfig)? [yN] " -n 1 -r
+    echo ""
+    if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+        SETUP_RCFILES=0
+    else
+        SETUP_RCFILES=1
+        # CHECK INDIVIDUALLY
+
+        # BASH ENVIRONMENT
+        ##################
+        read -p "Do you want to setup bashrc and dircolors? [yN] " -n 1 -r
+        echo ""
+        if [[ $REPLY =~ ^[Yy]$ ]]
+        then
             SETUP_BASHRC=0
-            shift
-        ;;
-        screenrc)
+        else
+            SETUP_BASHRC=1
+        fi
+
+        # SCREEN ENVIRONMENT
+        ##################
+        read -p "Do you want to setup the screenrc file? [yN] " -n 1 -r
+        echo ""
+        if [[ $REPLY =~ ^[Yy]$ ]]
+        then
             SETUP_SCREENRC=0
-            shift
-        ;;
-        dircolors)
-            SETUP_DIRCOLORS=0
-            shift
-        ;;
-        gitconfig)
+        else
+            SETUP_SCREENRC=1
+        fi
+
+        # SCREEN ENVIRONMENT
+        ##################
+        read -p "Do you want to setup the gitconfig file? [yN] " -n 1 -r
+        echo ""
+        if [[ $REPLY =~ ^[Yy]$ ]]
+        then
             SETUP_GITCONFIG=0
-            shift
-        ;;
-        rcFiles)
-            SETUP_RCFILES=0
-            shift
-        ;;
-        i3)
-            echo "do i3"
-            shift
-        ;;
-    esac
-done
+        else
+            SETUP_GITCONFIG=1
+        fi
+    fi
 
-if [[ $SETUP_VIM == 0 ]];
-then
-    setup_vim --install=$VIM_INSTALL --YCM=$YCM
-fi
 
-if [[ $SETUP_BASHRC == 0 ]];
-then
-    setup_bashrc
-fi
+    # RC FILES
+    ############################
+    if [[ $SETUP_RCFILES == 0 ]]
+    then
+        setup_bashrc
+        setup_screenrc
+        setup_gitconfig
+        setup_dircolors
+    else
+        if [[ $SETUP_BASHRC == 0 ]];
+        then
+            setup_bashrc
+        fi
 
-if [[ $SETUP_SCREENRC == 0 ]];
-then
-    setup_screenrc
-fi
+        if [[ $SETUP_SCREENRC == 0 ]];
+        then
+            setup_screenrc
+        fi
 
-if [[ $SETUP_DIRCOLORS == 0 ]];
-then
-    setup_dircolors
-fi
+        if [[ $SETUP_DIRCOLORS == 0 ]];
+        then
+            setup_dircolors
+        fi
 
-if [[ $SETUP_GITCONFIG == 0 ]];
-then
-    setup_gitconfig
-fi
+        if [[ $SETUP_GITCONFIG == 0 ]];
+        then
+            setup_gitconfig
+        fi
+    fi
 
-if [[ $SETUP_RCFILES == 0 ]];
-then
-    setup_rcFiles
-fi
+    # VIM
+    ###########################
+    if [[ $VIM_BUILD == 0 ]]
+    then
+        build_vim
+    fi
+
+    if [[ $VIM_PLUG == 0 ]]
+    then
+        vim_dein
+    fi
+}
+
+setup
+
 

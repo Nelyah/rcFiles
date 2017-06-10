@@ -7,8 +7,8 @@ set runtimepath+=@HOME@/.vim/dein//repos/github.com/Shougo/dein.vim
 let g:dein#install_process_timeout = 300
 
 " Required:
-if dein#load_state('@HOME@/.vim/dein')
-    call dein#begin('@HOME@/.vim/dein') " plugins' root path
+if dein#load_state(expand('~/.vim/dein'))
+    call dein#begin(expand('~/.vim/dein')) " plugins' root path
 
 " Let dein manage dein
 " Required:
@@ -31,8 +31,8 @@ if dein#load_state('@HOME@/.vim/dein')
     call dein#add('Xuyuanp/nerdtree-git-plugin') " get vim info in nerdtree
     call dein#add('tmhedberg/SimpylFold')
 
-    " call dein#add('scrooloose/syntastic')
-    call dein#add('w0rp/ale') " lint checker
+    call dein#add('scrooloose/syntastic')
+    " call dein#add('w0rp/ale') " lint checker
 
     call dein#add('tpope/vim-surround')
     call dein#add('tpope/vim-fugitive')
@@ -140,7 +140,7 @@ highlight Pmenu ctermbg=4
 " Prevents from continuously checking for errors
 " and eating up battery
 """""""""""""""""""""""""""""""""
-let g:ale_lint_on_text_changed = never
+" let g:ale_lint_on_text_changed = never
 
 
 """""""""""""""""""""""""""""""""
