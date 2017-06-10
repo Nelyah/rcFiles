@@ -12,25 +12,28 @@ if dein#load_state('@HOME@/.vim/dein')
 
 " Let dein manage dein
 " Required:
-    call dein#add('Shougo/dein.vim')
+    call dein#add('Shougo/dein.vim') " Plugin manager
     call dein#add('Shougo/vimproc.vim', {'build': 'make'})
-    call dein#add('Valloric/YouCompleteMe')
-    call dein#add('Shougo/unite.vim')
-    call dein#add('vim-airline/vim-airline')
+    call dein#add('Valloric/YouCompleteMe') " auto completion
+    call dein#add('Shougo/unite.vim') 
+
+    call dein#add('vim-airline/vim-airline') " line with useful infos
     call dein#add('vim-airline/vim-airline-themes')
-    call dein#add('tpope/vim-commentary')
-    call dein#add('airblade/vim-gitgutter')
-    "call dein#add('Shougo/neosnippet.vim')
-    "call dein#add('Shougo/neosnippet-snippets')
-    call dein#add('the-lambda-church/coquille')
-    call dein#add('kien/ctrlp.vim')
-    call dein#add('Raimondi/delimitMate')
+
+    call dein#add('tpope/vim-commentary') " comments based on the file type
+    call dein#add('airblade/vim-gitgutter') " git info on the left
+    call dein#add('the-lambda-church/coquille') " For the CoQ proof
+    call dein#add('kien/ctrlp.vim') " Fuzzy search for files in directory
+    call dein#add('Raimondi/delimitMate') " For parenthesis
     call dein#add('PotatoesMaster/i3-vim-syntax')
     call dein#add('Yggdroot/indentLine')
-    call dein#add('scrooloose/nerdtree')
-    call dein#add('Xuyuanp/nerdtree-git-plugin')
+    call dein#add('scrooloose/nerdtree') " File tree manager
+    call dein#add('Xuyuanp/nerdtree-git-plugin') " get vim info in nerdtree
     call dein#add('tmhedberg/SimpylFold')
-    call dein#add('scrooloose/syntastic')
+
+    " call dein#add('scrooloose/syntastic')
+    call dein#add('w0rp/ale') " lint checker
+
     call dein#add('tpope/vim-surround')
     call dein#add('tpope/vim-fugitive')
     call dein#add('majutsushi/tagbar')
@@ -42,9 +45,8 @@ if dein#load_state('@HOME@/.vim/dein')
     call dein#add('tomtom/tlib_vim')
     call dein#add('garbas/vim-snipmate')
     call dein#add('majutsushi/tagbar')
+    call dein#add('altercation/vim-colors-solarized')
 
-    " and a lot more plugins.....
-    "
     call dein#end()
     call dein#save_state()
 endif
@@ -52,19 +54,14 @@ endif
 set hidden
 
 syntax on
-"set nocompatible
+set t_Co=256 
 set incsearch           " search as characters are entered
 set hlsearch            " highlight matches
-set number              " line numbers"
+set number              " line numbers
 set autoindent
 set autoread            " reload automatically a file if not changed
 set magic               " For regex
 
-
-" Airline Plugin
-let g:airline_theme = 'bubblegum'
-let g:airline#extensions#tabline#enabled = 1
-set laststatus=2
 
 """""""""""""""""""""""""""
 " Basic VIM modifications "
@@ -80,7 +77,6 @@ set shiftwidth=4
 
 set ignorecase
 set showmode            " Show the editing mode on last line
-set t_Co=256
 set encoding=utf-8
 
 
@@ -95,6 +91,7 @@ noremap k j
 noremap j h
 noremap gV `[V`]
 
+" Switching panes using the ctrl key
 nnoremap <C-j> <C-w>h
 nnoremap <C-k> <C-w>j
 nnoremap <C-l> <C-w>k
@@ -125,6 +122,10 @@ nnoremap <Leader>w :w<CR>
 
 " Color scheme
 colorscheme ir_black
+" let g:solarized_termcolors=256
+" set background=dark
+" colorscheme solarized
+
 " completion highlight
 highlight Pmenu ctermbg=4
 
@@ -134,14 +135,31 @@ highlight Pmenu ctermbg=4
 """""""""""""""""""""""""""
 """""""""""""""""""""""""""
 
+"""""""""""""""""""""""""""""""""
+" ale plugin (syntax checking)
+" Prevents from continuously checking for errors
+" and eating up battery
+"""""""""""""""""""""""""""""""""
+let g:ale_lint_on_text_changed = never
+
+
+"""""""""""""""""""""""""""""""""
+" Airline Plugin
+"""""""""""""""""""""""""""""""""
+let g:airline_theme = 'bubblegum'
+let g:airline#extensions#tabline#enabled = 1
+set laststatus=2
+
 """""""""""""""""""
 " YOU COMPLETE ME "
 """""""""""""""""""
 " config File
 let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
+let g:ycm_python_binary_path = '/usr/bin/python3'
 " let g:ycm_confirm_extra_conf = 0
 
 
+" CtrlP plugin
 nnoremap <Leader>o :CtrlP<CR>
 nmap <Leader><Leader> V
 vmap v <Plug>(expand_region_expand)
@@ -151,6 +169,7 @@ nnoremap <Leader>a :noh<return><CR>
 
 autocmd CompleteDone * pclose
 
+"""""""""""""""""""""""""""""""""
 " pops Tagbar
 nmap <F8> :TagbarToggle<CR>
 
@@ -159,9 +178,11 @@ nmap <F8> :TagbarToggle<CR>
 "execute WatchForChanges("*",autoreadargs)
 
 
+"""""""""""""""""""""""""""""""""
 " Maps Coquille commands to <F2> (Undo), <F3> (Next), <F4> (ToCursor)
 au FileType coq call coquille#FNMapping()
 
+"""""""""""""""""""""""""""""""""
 "Python folding plugin : To be able to read doc
 let g:SimpylFold_docstring_preview = 1
 
