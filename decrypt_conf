@@ -1,5 +1,11 @@
 #! /bin/bash
 
+if [[ ! -e conf_files.gpg ]]
+then
+    echo "No such file: conf_files.gpg"
+    exit 1
+fi
+
 gpg --decrypt conf_files.gpg | tar xz
 
 if [[ $? == 0 ]]

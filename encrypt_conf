@@ -1,11 +1,17 @@
 #! /bin/bash
 
+if [[ ! -d conf_files ]]
+then
+    echo "No such directory: conf_files/"
+    exit 1
+fi
+
 tar cz conf_files/ | gpg --output conf_files.gpg -c
 
 # if failure...
 if [[ $? != 0 ]]
 then
-    exit
+    exit 1
 fi
 
 rm -rf conf_files/
