@@ -1,0 +1,8 @@
+#! /bin/bash
+
+gpg --decrypt conf_files.gpg | tar xz
+
+if [[ $? == 0 ]]
+then
+    rm -f conf_files.gpg
+fi

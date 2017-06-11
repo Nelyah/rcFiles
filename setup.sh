@@ -12,24 +12,24 @@ echo $ARCHL
 setup_bashrc () {
     case $OS in
     Linux)
-        cp confFiles/bashrc ${HOME}/.bashrc
+        cp conf_files/bashrc ${HOME}/.bashrc
         ;;
     Darwin)
-        cp confFiles/bashrc ${HOME}/.bash_profile
+        cp conf_files/bashrc ${HOME}/.bash_profile
         ;;
     esac
 }
 
 setup_screenrc () {
-    cp confFiles/screenrc ${HOME}/.screenrc
+    cp conf_files/screenrc ${HOME}/.screenrc
 }
 
 setup_gitconfig () {
-    cp confFiles/gitconfig ${HOME}/.gitconfig
+    cp conf_files/gitconfig ${HOME}/.gitconfig
 }
 
 setup_dircolors () {
-    cp confFiles/dircolors ${HOME}/.dircolors
+    cp conf_files/dircolors ${HOME}/.dircolors
 }
 
 setup_rcFiles () {
@@ -47,7 +47,7 @@ vim_dein () {
     cp -r vimPlug/colors/ ${HOME}/.vim/
     echo " Done."
 
-    # Dein 
+    # Dein
     echo "Setting up dein plugin manager..."
     PLUGIN_DIR=${HOME}/.vim/dein/
     INSTALL_DIR="${PLUGIN_DIR}/repos/github.com/Shougo/dein.vim"
@@ -71,6 +71,9 @@ vim_dein () {
     Linux)
         sed -r -i "s|(set\ runtimepath\+=).*$|\1${INSTALL_DIR}|" $HOME/.vim/vimrc
         sed -r -i "s|@HOME@|${HOME}|" $HOME/.vim/vimrc
+
+        # if we do NOT install YCM
+        # comment the corresponding line
         if [[ $YCM == 1 ]]
         then
             sed -r -i 's/(.*dein#add.*YouCompleteMe.*)/\"\1/' $HOME/.vim/vimrc
@@ -108,7 +111,7 @@ vim_dein () {
 
             # ARCH and manjaro users have to use system libclang
             if [[ $ARCHL == 0 ]]
-            then 
+            then
                 ./install.py --clang-completer --system-libclang
             else
                 ./install.py --clang-completer
@@ -208,7 +211,7 @@ setup(){
         VIM_BUILD=1
         echo "Assuming vim installed."
     fi
-    
+
     # VIM PLUGIN SETUP
     ##################
     read -p "Do you want to setup vim plugins? [yN] " -n 1 -r

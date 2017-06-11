@@ -1,0 +1,11 @@
+#! /bin/bash
+
+tar cz conf_files/ | gpg --output conf_files.gpg -c
+
+# if failure...
+if [[ $? != 0 ]]
+then
+    exit
+fi
+
+rm -rf conf_files/
