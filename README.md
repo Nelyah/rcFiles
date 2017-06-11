@@ -6,6 +6,6 @@ The setup script is meant to be as clear and readible as possible, however insta
 I therefore highly suggest you to at least take a look at the script and look at what it does before running it.
 
 ## To use the repo:
-Some of my config files contain some personnal informations (ssh logins, etc.) and I decided to remove it from public access.
-My VIM install is still freely available for those who would want to take a look at it.
+Some of my config files contain personnal informations (ssh logins, etc.) that I decided to remove from public access.
+My VIM install and config files are still freely available for those who would like to take a look at them.
 Run the script `./setup.sh` and it will ask for options on what it should install.
