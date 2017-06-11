@@ -1,6 +1,13 @@
 #! /bin/bash
 
 OS=$(uname)
+if [[ ! -z $(grep -E "(ARCH|MANJARO)" <<< $(uname -r)) ]]
+then
+    ARCHL=1
+else
+    ARCHL=0
+fi
+echo $ARCHL
 
 setup_bashrc () {
     case $OS in
@@ -181,24 +188,10 @@ build_vim() {
     esac
 }
 
-setup_all () {
-    setup_vim
-    setup_rcFiles
-}
-
 setup(){
-    read -p "Are you an arch or manjaro linux user? [yN] " -n 1 -r
-    echo ""
-    if [[ $REPLY =~ ^[Yy]$ ]]
-    then
-        ARCHL=0
-    else
-        ARCHL=1
-    fi
-
     # VIM BUILD
     ##################
-    read -p "Do you want to build vim from source (ubuntu only)? [yN] " -n 1 -r
+    read -p "Do you want to build vim from source (ubuntu only) or install/upgrade it with homebrew (OSX)? [yN] " -n 1 -r
     echo ""
     if [[ $REPLY =~ ^[Yy]$ ]]
     then
