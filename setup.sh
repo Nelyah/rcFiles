@@ -71,10 +71,18 @@ vim_dein () {
     Linux)
         sed -r -i "s|(set\ runtimepath\+=).*$|\1${INSTALL_DIR}|" $HOME/.vim/vimrc
         sed -r -i "s|@HOME@|${HOME}|" $HOME/.vim/vimrc
+        if [[ $YCM == 1 ]]
+        then
+            sed -r -i 's/(.*dein#add.*YouCompleteMe.*)/\"\1/' $HOME/.vim/vimrc
+        fi
         ;;
     Darwin)
         sed -E -i '' "s|(set\ runtimepath\+=).*$|\1${INSTALL_DIR}|" $HOME/.vim/vimrc
         sed -E -i '' "s|@HOME@|${HOME}|" $HOME/.vim/vimrc
+        if [[ $YCM == 1 ]]
+        then
+            sed -E -i 's/(.*dein#add.*YouCompleteMe.*)/\"\1/' $HOME/.vim/vimrc
+        fi
         ;;
     esac
 
