@@ -106,7 +106,7 @@ endif
 " Syntax highlighting
 hi Comment          guifg=#7C7C7C     guibg=NONE        gui=NONE      ctermfg=darkgray    ctermbg=NONE        cterm=NONE
 hi String           guifg=#A8FF60     guibg=NONE        gui=NONE      ctermfg=70        ctermbg=NONE        cterm=NONE
-hi Number           guifg=#FF73FD     guibg=NONE        gui=NONE      ctermfg=magenta     ctermbg=NONE        cterm=NONE
+hi Number           guifg=#FF73FD     guibg=NONE        gui=NONE      ctermfg=212     ctermbg=NONE        cterm=NONE
 
 hi Keyword          guifg=#96CBFE     guibg=NONE        gui=NONE      ctermfg=39        ctermbg=NONE        cterm=NONE
 hi PreProc          guifg=#96CBFE     guibg=NONE        gui=NONE      ctermfg=135        ctermbg=NONE        cterm=NONE
