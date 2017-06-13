@@ -8,28 +8,30 @@ let g:dein#install_process_timeout = 300
 
 " Required:
 if dein#load_state(expand('~/.vim/dein'))
-    call dein#begin(expand('~/.vim/dein')) " plugins' root path
+    call dein#begin(expand('~/.vim/dein'))                 " plugins' root path
 
 " Let dein manage dein
 " Required:
-    call dein#add('Shougo/dein.vim') " Plugin manager
+    call dein#add('Shougo/dein.vim')                       " Plugin manager
     call dein#add('Shougo/vimproc.vim', {'build': 'make'})
-    call dein#add('Valloric/YouCompleteMe') " auto completion
-    call dein#add('Shougo/unite.vim') 
+    call dein#add('Valloric/YouCompleteMe')                " auto completion
+    call dein#add('Shougo/denite.nvim')                    " Yet another fuzzy finder
 
-    call dein#add('vim-airline/vim-airline') " line with useful infos
+    call dein#add('vim-airline/vim-airline')               " line with useful infos
     call dein#add('vim-airline/vim-airline-themes')
 
-    call dein#add('tpope/vim-commentary') " comments based on the file type
-    call dein#add('airblade/vim-gitgutter') " git info on the left
-    call dein#add('the-lambda-church/coquille') " For the CoQ proof
-    call dein#add('kien/ctrlp.vim') " Fuzzy search for files in directory
-    call dein#add('Raimondi/delimitMate') " For parenthesis
+    call dein#add('tpope/vim-commentary')                  " comments based on the file type
+    call dein#add('airblade/vim-gitgutter')                " git info on the left
+    call dein#add('the-lambda-church/coquille')            " For the CoQ proof
+    call dein#add('kien/ctrlp.vim')                        " Fuzzy search for files in directory
+    call dein#add('Raimondi/delimitMate')                  " For parenthesis
     call dein#add('PotatoesMaster/i3-vim-syntax')
     call dein#add('Yggdroot/indentLine')
-    call dein#add('scrooloose/nerdtree') " File tree manager
-    call dein#add('Xuyuanp/nerdtree-git-plugin') " get vim info in nerdtree
+    call dein#add('scrooloose/nerdtree')                   " File tree manager
+    call dein#add('Xuyuanp/nerdtree-git-plugin')           " get vim info in nerdtree
     call dein#add('tmhedberg/SimpylFold')
+    call dein#add('godlygeek/tabular')                     " Tabuliarise and align based on pattern
+    call dein#add('ap/vim-css-color')                      " Color highlighter
 
     call dein#add('scrooloose/syntastic')
     " call dein#add('w0rp/ale') " lint checker
@@ -190,6 +192,10 @@ let g:SimpylFold_docstring_preview = 1
 """""""""""""
 set diffopt+=vertical
 
+""""""""""""""""""""""""""""""""""
+" Tabular
+nmap <Leader>a= :Tabularize /=<CR>
+vmap <Leader>a= :Tabularize /=<CR>
 
 """""""""""""""""""
 " Useful function "
