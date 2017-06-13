@@ -3,9 +3,9 @@
 OS=$(uname)
 if [[ ! -z $(grep -E "(ARCH|MANJARO)" <<< $(uname -r)) ]]
 then
-    ARCHL=1
-else
     ARCHL=0
+else
+    ARCHL=1
 fi
 echo $ARCHL
 
