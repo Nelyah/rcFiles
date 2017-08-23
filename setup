@@ -7,7 +7,17 @@ then
 else
     ARCHL=1
 fi
-echo $ARCHL
+
+if [[ -f logins.gpg ]]
+then
+    read -p "The logins.gpg file is present, do you wish to decrypt it (password required)? [Yn] " -n 1 -r
+    echo ""
+    if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+        ./decrypt_logins
+    fi
+fi
+
 
 setup_bashrc () {
     case $OS in
