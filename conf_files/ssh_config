@@ -1,0 +1,46 @@
+Host github.com
+    HostName github.com
+    User git
+
+Host mesu
+    HostName mesu.dsi.upmc.fr
+    User @USER_LASTNAME@
+    StrictHostKeyChecking no
+    UserKnownHostsFile=/dev/null LogLevel QUIET
+
+Host lcqb
+    HostName www.lcqb.upmc.fr
+    User @USER_LASTNAME@
+
+Host lpc
+    HostName @IP_DESKTOP-LCQB@
+    User @USER_FIRSTNAME@
+    ProxyJump lcqb
+
+Host cluster
+    HostName @IP_CLUSTER-LCQB@
+    User @USER_LASTNAME@
+    ProxyJump lcqb
+
+Host rackstation
+    HostName @IP_RACKSTATION-LCQB@
+    User @USER_LASTNAME@
+    ProxyJump lcqb
+
+Host lcqb-laptop
+    HostName @IP_LAPTOP-LCQB@
+    User @USER_FIRSTNAME@
+    ProxyJump lcqb
+
+Host ppti
+    HostName ssh.ufr-info-p6.jussieu.fr
+    User @USER_LASTNAME@
+
+Host ppti-student
+    HostName ssh.ufr-info-p6.jussieu.fr
+    User @UPMC-STUDENT-LOGIN@
+
+Host nivose
+    HostName nivose.informatique.univ-paris-diderot.fr
+    User @USER_LASTNAME@
+ 

@@ -1,14 +1,14 @@
 #! /bin/bash
 
-if [[ ! -e conf_files.gpg ]]
+if [[ ! -e logins.gpg ]]
 then
-    echo "No such file: conf_files.gpg"
+    echo "No such file: logins.gpg"
     exit 1
 fi
 
-gpg --decrypt conf_files.gpg | tar xz
+gpg --decrypt logins.gpg > logins
 
 if [[ $? == 0 ]]
 then
-    rm -f conf_files.gpg
+    rm -f logins.gpg
 fi

@@ -1,12 +1,12 @@
 #! /bin/bash
 
-if [[ ! -d conf_files ]]
+if [[ ! -f logins ]]
 then
-    echo "No such directory: conf_files/"
+    echo "No such file: logins"
     exit 1
 fi
 
-tar cz conf_files/ | gpg --output conf_files.gpg -c
+gpg --output logins.gpg -c logins
 
 # if failure...
 if [[ $? != 0 ]]
@@ -14,4 +14,4 @@ then
     exit 1
 fi
 
-rm -rf conf_files/
+rm -f logins
