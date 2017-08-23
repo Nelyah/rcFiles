@@ -1,5 +1,6 @@
-vim/
+./vim/
 .*.swp
 */.*.swp
 .*.swo
 */.*.swo
+conf_files_logins

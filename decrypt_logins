@@ -11,4 +11,24 @@ gpg --decrypt logins.gpg > logins
 if [[ $? == 0 ]]
 then
     rm -f logins.gpg
+
+    cp -r conf_files/ conf_files_logins/
+    for file in $(find conf_files/logins/)
+    do
+        # For each column of the logins file
+        awk -F"---" '{
+            if(substr($1,1,1) != "#"){ 
+                print $1 $2
+            }
+        }' logins | \
+        while read key value
+        do
+            # Replace in the file
+            sed -r -i "s/$key/$value/g" $file
+        done
+    done
+
+    exit 0
 fi
+exit 1
+

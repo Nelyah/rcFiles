@@ -1,11 +1,22 @@
 #! /bin/bash
 
+# Check for the OS used
 OS=$(uname)
 if [[ ! -z $(grep -E "(ARCH|MANJARO)" <<< $(uname -r)) ]]
 then
     ARCHL=0
 else
     ARCHL=1
+fi
+
+
+# check if the config_files have already been decrypted with the 
+# login
+if [[ -d conf_files_logins/ ]]
+then
+    CONFDIR=conf_files_logins
+else
+    CONFDIR=conf_files
 fi
 
 if [[ -f logins.gpg ]]
@@ -15,31 +26,34 @@ then
     if [[ $REPLY =~ ^[Yy]$ ]]
     then
         ./decrypt_logins
+        if [[ $? == 0 ]]
+        then
+            CONFDIR=conf_files_logins
+        fi
     fi
 fi
-
 
 setup_bashrc () {
     case $OS in
     Linux)
-        cp conf_files/bashrc ${HOME}/.bashrc
+        cp $CONFDIR/bashrc ${HOME}/.bashrc
         ;;
     Darwin)
-        cp conf_files/bashrc ${HOME}/.bash_profile
+        cp $CONFDIR/bashrc ${HOME}/.bash_profile
         ;;
     esac
 }
 
 setup_screenrc () {
-    cp conf_files/screenrc ${HOME}/.screenrc
+    cp $CONFDIR/screenrc ${HOME}/.screenrc
 }
 
 setup_gitconfig () {
-    cp conf_files/gitconfig ${HOME}/.gitconfig
+    cp $CONFDIR/gitconfig ${HOME}/.gitconfig
 }
 
 setup_dircolors () {
-    cp conf_files/dircolors ${HOME}/.dircolors
+    cp $CONFDIR/dircolors ${HOME}/.dircolors
 }
 
 setup_rcFiles () {
@@ -54,7 +68,7 @@ setup_rcFiles () {
 vim_dein () {
     echo -n "Setting the color theme directory in vim..."
     mkdir -p ${HOME}/.vim/
-    cp -r vimPlug/colors/ ${HOME}/.vim/
+    cp -r $CONFDIR/vim/colors/ ${HOME}/.vim/
     echo " Done."
 
     # Dein
@@ -74,7 +88,7 @@ vim_dein () {
     fi
 
     # copy the vimrc file into our .vim/ directory
-    cp vimPlug/vimrc ${HOME}/.vim/
+    cp $CONFDIR/vim/vimrc ${HOME}/.vim/
 
     # replace some values inside the vimrc
     case $OS in
@@ -110,11 +124,11 @@ vim_dein () {
 
     if [[ $YCM == 0 ]];
     then
-        if [[ ! -z $(grep "Valloric/YouCompleteMe" vimPlug/vimrc) ]];
+        if [[ ! -z $(grep "Valloric/YouCompleteMe" $CONFDIR/vim/vimrc) ]];
         then
             echo "YouCompleteMe is installed"
             echo -n "Copying the YCM config file into ${HOME}/.vim/.ycm_extra_conf.py..."
-            cp vimPlug/.ycm_extra_conf.py ${HOME}/.vim/
+            cp $CONFDIR/vim/.ycm_extra_conf.py ${HOME}/.vim/
             echo " Done."
             echo "Compiling YCM ..."
             cd ~/.vim/dein/repos/github.com/Valloric/YouCompleteMe/
