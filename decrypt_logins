@@ -13,7 +13,7 @@ then
     rm -f logins.gpg
 
     cp -r conf_files/ conf_files_logins/
-    for file in $(find conf_files_logins/)
+    for file in $(find conf_files_logins/ -type f)
     do
         # For each column of the logins file
         awk -F"---" '{
@@ -24,7 +24,10 @@ then
         while read key value
         do
             # Replace in the file
-            sed -r -i "s/$key/$value/g" $file
+            if [[ $key != "" ]]
+            then
+                sed -r -i "s/$key/$value/g" $file
+            fi
         done
     done
 
