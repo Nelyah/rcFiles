@@ -13,7 +13,7 @@ then
     rm -f logins.gpg
 
     cp -r conf_files/ conf_files_logins/
-    for file in $(find conf_files/logins/)
+    for file in $(find conf_files_logins/)
     do
         # For each column of the logins file
         awk -F"---" '{
