@@ -3,7 +3,7 @@
 
 
 " Required:
-set runtimepath+=@HOME@/.vim/dein//repos/github.com/Shougo/dein.vim
+set runtimepath+=~/.vim/dein//repos/github.com/Shougo/dein.vim
 let g:dein#install_process_timeout = 300
 
 " Required:
@@ -13,31 +13,36 @@ if dein#load_state(expand('~/.vim/dein'))
 " Let dein manage dein
 " Required:
     call dein#add('Shougo/dein.vim')                       " Plugin manager
-    call dein#add('Shougo/vimproc.vim', {'build': 'make'})
-    call dein#add('Valloric/YouCompleteMe')                " auto completion
-    call dein#add('Shougo/denite.nvim')                    " Yet another fuzzy finder
+    call dein#add('lifepillar/vim-mucomplete')                " auto completion
 
+    call dein#add('Shougo/vimproc.vim', {'build': 'make'})
+    "call dein#add('Valloric/YouCompleteMe')                " auto completion
+    call dein#add('kien/ctrlp.vim')                        " Fuzzy search for files in directory
+
+    " call dein#add('scrooloose/syntastic')
+    call dein#add('w0rp/ale') " lint checker
+
+    call dein#add('flazz/vim-colorschemes')
     call dein#add('vim-airline/vim-airline')               " line with useful infos
     call dein#add('vim-airline/vim-airline-themes')
-
-    call dein#add('tpope/vim-commentary')                  " comments based on the file type
     call dein#add('airblade/vim-gitgutter')                " git info on the left
-    call dein#add('the-lambda-church/coquille')            " For the CoQ proof
-    call dein#add('kien/ctrlp.vim')                        " Fuzzy search for files in directory
+    call dein#add('ap/vim-css-color')                      " Color highlighter
+    call dein#add('Yggdroot/indentLine')                   " Display indentation
+
     call dein#add('Raimondi/delimitMate')                  " For parenthesis
-    call dein#add('PotatoesMaster/i3-vim-syntax')
-    call dein#add('Yggdroot/indentLine')
     call dein#add('scrooloose/nerdtree')                   " File tree manager
     call dein#add('Xuyuanp/nerdtree-git-plugin')           " get vim info in nerdtree
     call dein#add('tmhedberg/SimpylFold')
     call dein#add('godlygeek/tabular')                     " Tabuliarise and align based on pattern
-    call dein#add('ap/vim-css-color')                      " Color highlighter
 
-    call dein#add('scrooloose/syntastic')
-    " call dein#add('w0rp/ale') " lint checker
+    call dein#add('sheerun/vim-polyglot')
+    call dein#add('vim-python/python-syntax')
 
+    call dein#add('tpope/vim-commentary')                  " comments based on the file type
     call dein#add('tpope/vim-surround')
+    call dein#add('tpope/vim-sensible')
     call dein#add('tpope/vim-fugitive')
+
     call dein#add('majutsushi/tagbar')
     call dein#add('def-lkb/vimbufsync')
     call dein#add('terryma/vim-expand-region')
@@ -45,46 +50,68 @@ if dein#load_state(expand('~/.vim/dein'))
     call dein#add('terryma/vim-multiple-cursors')
     call dein#add('marcweber/vim-addon-mw-utils')
     call dein#add('tomtom/tlib_vim')
-    call dein#add('garbas/vim-snipmate')
     call dein#add('majutsushi/tagbar')
-    call dein#add('altercation/vim-colors-solarized')
+
+    call dein#add('SirVer/ultisnips')
+    call dein#add('honza/vim-snippets')
 
     call dein#end()
     call dein#save_state()
 endif
 
-set hidden
-
-syntax on
-set t_Co=256 
-set incsearch           " search as characters are entered
-set hlsearch            " highlight matches
-set number              " line numbers
-set autoindent
-set autoread            " reload automatically a file if not changed
-set magic               " For regex
-
-
 """""""""""""""""""""""""""
 " Basic VIM modifications "
 """""""""""""""""""""""""""
+
+
+set hidden " Allow background buffers without saving
+set splitright
+
+set t_Co=256 
+set number              " line numbers
+set encoding=utf-8
+
+set autoindent
+set autoread            " reload automatically a file if not changed
+
+" Text wrapping
+set nowrap
+set textwidth=79
+" set colorcolumn=80
+
+" Search 
+set incsearch           " search as characters are entered
+set hlsearch            " highlight matches
+set magic               " For regex
+set ignorecase
+
+" vim tmp files
+set directory=~/.vim/swap,/tmp
+set backupdir=~/.vim/backup,/tmp
+set undodir=~/.vim/undo,/tmp
+
 
 " mapping the 'super' button on space
 let mapleader = "\<Space>"
 
 " Tab spec
 set tabstop=4
-set expandtab
 set shiftwidth=4
+set expandtab
+set backspace=indent,eol,start
 
-set ignorecase
-set showmode            " Show the editing mode on last line
-set encoding=utf-8
+""" NetRW - VIM file explorer
+let g:netrw_liststyle = 1 " Detail View
+let g:netrw_sizestyle = "H" " Human-readable file sizes
+" let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+' " hide dotfiles
+" let g:netrw_hide = 1 " hide dotfiles by default
+let g:netrw_banner = 0 " Turn off banner
+""" Explore in vertical split
+nnoremap <Leader>e :Explore! <enter>
 
-
+syntax on
 filetype on
 filetype plugin on
-set backspace=indent,eol,start
 
 " Some remaps
 noremap m l
@@ -99,42 +126,37 @@ nnoremap <C-k> <C-w>j
 nnoremap <C-l> <C-w>k
 nnoremap <C-m> <C-w>l
 
+" Saving
+nnoremap <Leader>w :w<CR>
+
+" Save the copy buffer
+noremap <Leader>x "+
 
 " Stupid window...
 map q: :q
 
 " Buffers 
 """"""""""
-" Move to the previous buffer with "gp"
 nnoremap <Leader>j :bp<CR>
-" Move to the next buffer with "gn"
 nnoremap <Leader>m :bn<CR>
-" List all possible buffers with "gl"
 nnoremap gl :ls<CR>
-" List all possible buffers with "gb" and accept a new buffer argument [1]
 nnoremap gb :ls<CR>:b
+
 " Close the current buffer and move to the previous one
 " This replicates the idea of closing a tab
 nmap <Leader>q :bp <BAR> bd #<CR>
-""""""""
-""""""""
 
-" Save with space-w
-nnoremap <Leader>w :w<CR>
+" Visual mode enhancements
+nmap <Leader><Leader> V
+
+" Turn off highlight after search
+nnoremap <Leader>a :noh<return><CR>
 
 " Color scheme
 colorscheme ir_black
-" let g:solarized_termcolors=256
-" set background=dark
-" colorscheme solarized
 
-" completion highlight
-highlight Pmenu ctermbg=4
-
-"""""""""""""""""""""""""""
 """""""""""""""""""""""""""
 "        PLUGINS          "
-"""""""""""""""""""""""""""
 """""""""""""""""""""""""""
 
 """""""""""""""""""""""""""""""""
@@ -142,7 +164,7 @@ highlight Pmenu ctermbg=4
 " Prevents from continuously checking for errors
 " and eating up battery
 """""""""""""""""""""""""""""""""
-" let g:ale_lint_on_text_changed = never
+let g:ale_lint_on_text_changed = 'never'
 
 
 """""""""""""""""""""""""""""""""
@@ -156,35 +178,22 @@ set laststatus=2
 " YOU COMPLETE ME "
 """""""""""""""""""
 " config File
-let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
-let g:ycm_python_binary_path = '/usr/bin/python3'
+" let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
+" let g:ycm_python_binary_path = '/usr/bin/python3'
 " let g:ycm_confirm_extra_conf = 0
-
 
 " CtrlP plugin
 nnoremap <Leader>o :CtrlP<CR>
-nmap <Leader><Leader> V
-vmap v <Plug>(expand_region_expand)
-vmap <C-v> <Plug>(expand_region_shrink)
-" Turn off highlight after search
-nnoremap <Leader>a :noh<return><CR>
-
 autocmd CompleteDone * pclose
 
-"""""""""""""""""""""""""""""""""
 " pops Tagbar
 nmap <F8> :TagbarToggle<CR>
 
-"autocmd VimEnter * WatchForChanges
-"let autoreadargs={'autoread':1}
-"execute WatchForChanges("*",autoreadargs)
+" Expand regions 
+vmap v <Plug>(expand_region_expand)
+vmap <C-v> <Plug>(expand_region_shrink)
 
 
-"""""""""""""""""""""""""""""""""
-" Maps Coquille commands to <F2> (Undo), <F3> (Next), <F4> (ToCursor)
-au FileType coq call coquille#FNMapping()
-
-"""""""""""""""""""""""""""""""""
 "Python folding plugin : To be able to read doc
 let g:SimpylFold_docstring_preview = 1
 
@@ -196,6 +205,26 @@ set diffopt+=vertical
 " Tabular
 nmap <Leader>a= :Tabularize /=<CR>
 vmap <Leader>a= :Tabularize /=<CR>
+
+" Mu Complete Autocompletion
+set completeopt=menuone,noinsert,noselect
+set shortmess+=c " Turn off completion messages
+let g:jedi#popup_on_dot = 1  " It may be 1 as well
+
+inoremap <expr> <c-e> mucomplete#popup_exit("\<c-e>")
+inoremap <expr> <c-y> mucomplete#popup_exit("\<c-y>")
+inoremap <expr>  <cr> mucomplete#popup_exit("\<cr>")
+
+call add(g:mucomplete#chains['default'], 'ulti')
+
+let g:mucomplete#enable_auto_at_startup = 1
+
+
+" VIM polyglot
+let g:polyglot_disabled = ['python']
+
+" python-syntax
+let g:python_highlight_all = 1
 
 """""""""""""""""""
 " Useful function "
@@ -211,11 +240,3 @@ function! s:Repl()
     return "p@=RestoreRegister()\<cr>"
 endfunction
 vmap <silent> <expr> p <sid>Repl()
-
-" Using snipmate with YCM - not working yet
-"let g:UltiSnipsExpandTrigger="<c-j>"
-"let g:UltiSnipsJumpForwardTrigger="<c-j>"
-"let g:UltiSnipsJumpBackwardTrigger="<c-k>"
-
-"""""""""""""""""""""""""""
-"""""""""""""""""""""""""""
