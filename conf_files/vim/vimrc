@@ -3,7 +3,7 @@
 
 
 " Required:
-set runtimepath+=~/.vim/dein//repos/github.com/Shougo/dein.vim
+set runtimepath+=/home/chloe/.vim/dein//repos/github.com/Shougo/dein.vim
 let g:dein#install_process_timeout = 300
 
 " Required:
@@ -13,10 +13,9 @@ if dein#load_state(expand('~/.vim/dein'))
 " Let dein manage dein
 " Required:
     call dein#add('Shougo/dein.vim')                       " Plugin manager
-    call dein#add('lifepillar/vim-mucomplete')                " auto completion
 
     call dein#add('Shougo/vimproc.vim', {'build': 'make'})
-    "call dein#add('Valloric/YouCompleteMe')                " auto completion
+    call dein#add('lifepillar/vim-mucomplete')                " auto completion
     call dein#add('kien/ctrlp.vim')                        " Fuzzy search for files in directory
 
     " call dein#add('scrooloose/syntastic')
@@ -30,10 +29,17 @@ if dein#load_state(expand('~/.vim/dein'))
     call dein#add('Yggdroot/indentLine')                   " Display indentation
 
     call dein#add('Raimondi/delimitMate')                  " For parenthesis
-    call dein#add('scrooloose/nerdtree')                   " File tree manager
-    call dein#add('Xuyuanp/nerdtree-git-plugin')           " get vim info in nerdtree
+
+    " NERDtree loaded on toggle
+    call dein#add('scrooloose/nerdtree',
+          \{'on_cmd': 'NERDTreeToggle'})
+    call dein#add('Xuyuanp/nerdtree-git-plugin',
+          \{'on_cmd': 'NERDTreeToggle'})
+
     call dein#add('tmhedberg/SimpylFold')
-    call dein#add('godlygeek/tabular')                     " Tabuliarise and align based on pattern
+    call dein#add('godlygeek/tabular',
+          \{ 'on_cmd' : [ 'Tab', 'Tabularize' ], 
+          \'augroup' : 'tabular' })                         " Tabuliarise and align based on pattern
 
     call dein#add('sheerun/vim-polyglot')
     call dein#add('vim-python/python-syntax')
@@ -63,6 +69,7 @@ endif
 " Basic VIM modifications "
 """""""""""""""""""""""""""
 
+set guioptions=M
 
 set hidden " Allow background buffers without saving
 set splitright
@@ -209,16 +216,20 @@ vmap <Leader>a= :Tabularize /=<CR>
 " Mu Complete Autocompletion
 set completeopt=menuone,noinsert,noselect
 set shortmess+=c " Turn off completion messages
-let g:jedi#popup_on_dot = 1  " It may be 1 as well
 
 inoremap <expr> <c-e> mucomplete#popup_exit("\<c-e>")
 inoremap <expr> <c-y> mucomplete#popup_exit("\<c-y>")
 inoremap <expr>  <cr> mucomplete#popup_exit("\<cr>")
 
-call add(g:mucomplete#chains['default'], 'ulti')
-
 let g:mucomplete#enable_auto_at_startup = 1
+call add(g:mucomplete#chains['default'], 'ulti') " For Ultisnips completion
 
+autocmd FileType python setlocal completeopt+=preview
+
+" Ultisnips
+let g:UltiSnipsExpandTrigger="<c-c>"
+let g:UltiSnipsJumpForwardTrigger="<c-n>"
+let g:UltiSnipsJumpBackwardTrigger="<c-b>"
 
 " VIM polyglot
 let g:polyglot_disabled = ['python']
