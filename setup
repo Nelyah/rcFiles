@@ -2,13 +2,6 @@
 
 # Check for the OS used
 OS=$(uname)
-if [[ ! -z $(grep -E "(ARCH|MANJARO)" <<< $(uname -r)) ]]
-then
-    ARCHL=0
-else
-    ARCHL=1
-fi
-
 
 # check if the config_files have already been decrypted with the 
 # login
@@ -46,6 +39,10 @@ setup_bashrc () {
 
 setup_screenrc () {
     cp $CONFDIR/screenrc ${HOME}/.screenrc
+}
+
+setup_tmux () {
+    cp $CONFDIR/tmux.conf ${HOME}/.tmux.conf
 }
 
 setup_gitconfig () {
@@ -90,29 +87,6 @@ vim_dein () {
     # copy the vimrc file into our .vim/ directory
     cp $CONFDIR/vim/vimrc ${HOME}/.vim/
 
-    # replace some values inside the vimrc
-    case $OS in
-    Linux)
-        sed -r -i "s|(set\ runtimepath\+=).*$|\1${INSTALL_DIR}|" $HOME/.vim/vimrc
-        sed -r -i "s|@HOME@|${HOME}|" $HOME/.vim/vimrc
-
-        # if we do NOT install YCM
-        # comment the corresponding line
-        if [[ $YCM == 1 ]]
-        then
-            sed -r -i 's/(.*dein#add.*YouCompleteMe.*)/\"\1/' $HOME/.vim/vimrc
-        fi
-        ;;
-    Darwin)
-        sed -E -i '' "s|(set\ runtimepath\+=).*$|\1${INSTALL_DIR}|" $HOME/.vim/vimrc
-        sed -E -i '' "s|@HOME@|${HOME}|" $HOME/.vim/vimrc
-        if [[ $YCM == 1 ]]
-        then
-            sed -E -i 's/(.*dein#add.*YouCompleteMe.*)/\"\1/' $HOME/.vim/vimrc
-        fi
-        ;;
-    esac
-
     # link the ~/.vim/vimrc to ~/.vimrc
     if [[ ! -L ${HOME}/.vimrc ]];
     then
@@ -121,29 +95,6 @@ vim_dein () {
 
     # Begin plugin installation
     vim -c "call dein#install()|q"
-
-    if [[ $YCM == 0 ]];
-    then
-        if [[ ! -z $(grep "Valloric/YouCompleteMe" $CONFDIR/vim/vimrc) ]];
-        then
-            echo "YouCompleteMe is installed"
-            echo -n "Copying the YCM config file into ${HOME}/.vim/.ycm_extra_conf.py..."
-            cp $CONFDIR/vim/.ycm_extra_conf.py ${HOME}/.vim/
-            echo " Done."
-            echo "Compiling YCM ..."
-            cd ~/.vim/dein/repos/github.com/Valloric/YouCompleteMe/
-
-            # ARCH and manjaro users have to use system libclang
-            if [[ $ARCHL == 0 ]]
-            then
-                ./install.py --clang-completer --system-libclang
-            else
-                ./install.py --clang-completer
-            fi
-            cd $OLDPWD
-        fi
-    fi
-
     vim -c "call dein#update()|q"
 }
 
@@ -208,25 +159,14 @@ build_vim() {
         fi
         cd $OLDPWD
     ;;
-    Darwin)
-        if type vim ;
-        then
-            echo -n "Vim already installed. Upgrading via homebrew..."
-            brew upgrade vim
-            echo " Done."
-        else
-            echo -n "Vim is not installed yet, installing via homebrew..."
-            brew install vim
-            echo " Done."
-        fi
-    ;;
     esac
 }
 
 setup(){
     # VIM BUILD
     ##################
-    read -p "Do you want to build vim from source (ubuntu only) or install/upgrade it with homebrew (OSX)? [yN] " -n 1 -r
+    read -p "Do you want to build vim from source (ubuntu only) or
+            install/upgrade it with homebrew (OSX)? [yN] " -n 1 -r
     echo ""
     if [[ $REPLY =~ ^[Yy]$ ]]
     then
@@ -243,21 +183,14 @@ setup(){
     if [[ $REPLY =~ ^[Yy]$ ]]
     then
         VIM_PLUG=0
-        read -p "Do you want to also install YCM? [yN] " -n 1 -r
-        echo ""
-        if [[ $REPLY =~ ^[Yy]$ ]]
-        then
-            YCM=0
-        else
-            YCM=1
-        fi
     else
         VIM_PLUG=1
     fi
 
     # RC FILES
     ##################
-    read -p "Do you want to setup all rc files? (.bashrc, .dircolors, screenrc, gitconfig)? [yN] " -n 1 -r
+    read -p "Do you want to setup all rc files? (.bashrc, .dircolors, 
+            screenrc, gitconfig)? [yN] " -n 1 -r
     echo ""
     if [[ $REPLY =~ ^[Yy]$ ]]
     then
@@ -288,6 +221,15 @@ setup(){
             SETUP_SCREENRC=1
         fi
 
+        read -p "Do you want to setup the tmux conf file? [yN] " -n 1 -r
+        echo ""
+        if [[ $REPLY =~ ^[Yy]$ ]]
+        then
+            SETUP_TMUX=0
+        else
+            SETUP_TMUX=1
+        fi
+
         # SCREEN ENVIRONMENT
         ##################
         read -p "Do you want to setup the gitconfig file? [yN] " -n 1 -r
@@ -307,6 +249,7 @@ setup(){
     then
         setup_bashrc
         setup_screenrc
+        setup_tmux
         setup_gitconfig
         setup_dircolors
     else
@@ -318,6 +261,11 @@ setup(){
         if [[ $SETUP_SCREENRC == 0 ]];
         then
             setup_screenrc
+        fi
+
+        if [[ $SETUP_TMUX == 0 ]];
+        then
+            setup_tmux
         fi
 
         if [[ $SETUP_DIRCOLORS == 0 ]];
