@@ -117,6 +117,25 @@ function back( ) {
     export MPWD=$P
 }
 
+function pacman(){
+    case $1 in
+        update )
+            sudo pacman -Syu
+        ;;
+        install ) 
+            shift
+            sudo pacman -S $@
+        ;;
+        remove )
+            shift
+            sudo pacman -Rns $@
+        ;;
+        *)
+            sudo pacman $@
+        ;;
+    esac
+}
+
 # Ctrl-z switch back to term. Now it allows to come back
 #fancy-ctrl-z () {
 #    if [[ $#BUFFER -eq 0 ]]; then
