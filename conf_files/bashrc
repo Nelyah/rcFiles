@@ -5,18 +5,17 @@ then
     export OLDPATH=$PATH
 fi
 
-export PATH="$HOME/bin$HOME/dev/go/bin:/usr/local/bin:/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-export GOPATH=$HOME/dev/go/
-export ANDROID_HOME=/usr/local/opt/android-sdk
-export JET2_HOME=$HOME/JET2/
-export EDITOR=vim
-export LD_LIBRARY_PATH=$HOME/lib/qhull-2012.1/lib:$LD_LIBRARY_PATH
-export ATTRACTDIR=$HOME/lib/attract/bin/ 
-export ATTRACTTOOLS=$ATTRACTDIR/../tools
+export PATH="$HOME/bin:$HOME/dev/go/bin:/usr/local/bin:/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 export PYTHONPATH=$PYTHONPATH:/usr/share/pdb2pqr
-#export `gnome-keyring-daemon`
+export EDITOR=vim
 
-/usr/bin/gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh > /dev/null
+# If the software is installed
+if [[ $(type fzf) ]]; then
+    source /usr/share/fzf/completion.bash
+    source /usr/share/fzf/key-bindings.bash
+fi
+
+gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh > /dev/null
 export GNOME_KEYRING_CONTROL GNOME_KEYRING_PID GPG_AGENT_INFO SSH_AUTH_SOCK
 
 if [ "$TERM" != "dumb" ]; then
@@ -24,7 +23,7 @@ if [ "$TERM" != "dumb" ]; then
     eval `dircolors ~/.dircolors`
 fi
 
-# Couleurs du préfix du terminal
+# Prefix colours for terminal
 NONE="\[\033[0;33m\]" 
 NM="\[\033[0;38m\]" 
 HI="\[\033[00;38;5;212m\]" 
@@ -46,7 +45,7 @@ done
 
 if [[ $KNOWN_USER == 0 ]]
 then
-    PS1_USER="Chloé"
+    PS1_USER="@USER_FIRSTNAME2@"
 else
     PS1_USER=$(whoami)
 fi
@@ -66,19 +65,17 @@ else
 fi
 export PS1="$SI\w$HI ${PS1_USER}${PS1_HOST} $ $IN"
 
-
-# ls with color
+# ls with colour
 alias ls="ls --color=always" 
 alias grep="grep --color=always"
 alias egrep="egrep --color=always"
 
-
-
 # Aliases
 alias ll='ls -lh'
 alias lla='ls -lha'
-alias llth='ls -lht|head'
 alias llt='ls -lht'
+alias llta='ls -lhta'
+alias llth='ls -lht | head'
 alias rm='rm -i'
 alias rebash='source ~/.bashrc'
 alias irssi@freenode=@ALIAS_IRSSI_FREENODE@
@@ -90,7 +87,7 @@ alias ....='cd ../../..'
 alias .....='cd ../../../..'
 
 # Useful function
-function up( ) {
+function up() {
     LIMIT=$1
     P=$PWD
     for ((i=1; i <= LIMIT; i++))
@@ -101,7 +98,7 @@ function up( ) {
     export MPWD=$P
 }
 
-function back( ) {
+function back() {
     if [ -z $1 ]
     then 
         cd $P
@@ -118,33 +115,21 @@ function back( ) {
 }
 
 function pacman(){
+    CMD_PACMAN=/usr/bin/pacman
     case $1 in
         update )
-            sudo pacman -Syu
+            sudo $CMD_PACMAN -Syu
         ;;
         install ) 
             shift
-            sudo pacman -S $@
+            sudo $CMD_PACMAN -S $@
         ;;
         remove )
             shift
-            sudo pacman -Rns $@
+            sudo $CMD_PACMAN -Rns $@
         ;;
         *)
-            sudo pacman $@
+            sudo $CMD_PACMAN $@
         ;;
     esac
 }
-
-# Ctrl-z switch back to term. Now it allows to come back
-#fancy-ctrl-z () {
-#    if [[ $#BUFFER -eq 0 ]]; then
-#        BUFFER="fg"
-#        zle accept-line
-#    else
-#        zle push-input
-#        zle clear-screen
-#    fi
-#}
-#zle -N fancy-ctrl-z
-#bindkey '^Z' fancy-ctrl-z
