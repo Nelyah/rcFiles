@@ -133,3 +133,10 @@ function pacman(){
         ;;
     esac
 }
+
+function parse_time() {
+    echo $1 | \
+    sed -r -e 's/^([^m]+)m([^s]+)s$/\1 \2/' -e 's/,/./' | \
+    awk '{print (60*$1)+$2}'
+
+}
