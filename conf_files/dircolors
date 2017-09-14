@@ -214,6 +214,9 @@ EXEC    38;5;70     #This is for files with execute permission:
 .py     00;38;5;220
 .tex    00;38;5;220
 .bib    00;38;5;220
+.r      00;38;5;220
+.R      00;38;5;220
+
 
 # description files
 .h 00;32
