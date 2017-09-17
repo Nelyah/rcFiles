@@ -19,8 +19,9 @@ then
     if [[ $REPLY =~ ^[Yy]$ ]]
     then
         ./decrypt_logins
-        if [[ $? == 0 ]]
-        then
+        if [[ $? == 0 ]]; then
+            CONFDIR=conf_files_logins
+        elif [[ -d conf_files_logins ]]; then
             CONFDIR=conf_files_logins
         fi
     fi
