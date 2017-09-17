@@ -3,7 +3,7 @@
 
 
 " Required:
-set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim
+set runtimepath+=/home/chloe/.vim/dein//repos/github.com/Shougo/dein.vim
 let g:dein#install_process_timeout = 300
 
 " Required:
@@ -15,9 +15,11 @@ if dein#load_state(expand('~/.vim/dein'))
     call dein#add('Shougo/dein.vim')                       " Plugin manager
 
     call dein#add('Shougo/vimproc.vim', {'build': 'make'})
-    call dein#add('lifepillar/vim-mucomplete')                " auto completion
     call dein#add('kien/ctrlp.vim')                        " Fuzzy search for files in directory
+    call dein#add('lifepillar/vim-mucomplete')                " auto completion
+    call dein#add('davidhalter/jedi-vim')                " auto completion
 
+    " call dein#add('scrooloose/syntastic')
     call dein#add('w0rp/ale') " lint checker
 
     call dein#add('flazz/vim-colorschemes')
@@ -112,7 +114,6 @@ let g:netrw_sizestyle = "H" " Human-readable file sizes
 " let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+' " hide dotfiles
 " let g:netrw_hide = 1 " hide dotfiles by default
 let g:netrw_banner = 0 " Turn off banner
-
 """ Explore in vertical split
 nnoremap <Leader>e :Explore! <enter>
 
@@ -181,6 +182,14 @@ let g:airline_theme = 'bubblegum'
 let g:airline#extensions#tabline#enabled = 1
 set laststatus=2
 
+"""""""""""""""""""
+" YOU COMPLETE ME "
+"""""""""""""""""""
+" config File
+" let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
+" let g:ycm_python_binary_path = '/usr/bin/python3'
+" let g:ycm_confirm_extra_conf = 0
+
 " CtrlP plugin
 nnoremap <Leader>o :CtrlP<CR>
 autocmd CompleteDone * pclose
@@ -206,17 +215,15 @@ nmap <Leader>a= :Tabularize /=<CR>
 vmap <Leader>a= :Tabularize /=<CR>
 
 " Mu Complete Autocompletion
-set completeopt=menuone,noinsert,noselect
+set completeopt+=longest,menuone,noinsert,noselect
 set shortmess+=c " Turn off completion messages
 
 inoremap <expr> <c-e> mucomplete#popup_exit("\<c-e>")
 inoremap <expr> <c-y> mucomplete#popup_exit("\<c-y>")
 inoremap <expr>  <cr> mucomplete#popup_exit("\<cr>")
 
+let g:mucomplete#chains = {'default' : ['path', 'omni', 'keyn', 'dict', 'incl', 'tags', 'ulti']}
 let g:mucomplete#enable_auto_at_startup = 1
-call add(g:mucomplete#chains['default'], 'ulti') " For Ultisnips completion
-
-autocmd FileType python setlocal completeopt+=preview
 
 " Ultisnips
 let g:UltiSnipsExpandTrigger="<c-c>"
