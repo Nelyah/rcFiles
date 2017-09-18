@@ -87,33 +87,6 @@ alias ....='cd ../../..'
 alias .....='cd ../../../..'
 
 # Useful function
-function up() {
-    LIMIT=$1
-    P=$PWD
-    for ((i=1; i <= LIMIT; i++))
-    do
-        P=$P/..
-    done
-    cd $P
-    export MPWD=$P
-}
-
-function back() {
-    if [ -z $1 ]
-    then 
-        cd $P
-        return
-    fi
-    LIMIT=$1
-    P=$MPWD
-    for ((i=1; i <= LIMIT; i++))
-    do
-        P=${P%/..}
-    done
-    cd $P
-    export MPWD=$P
-}
-
 function pacman(){
     CMD_PACMAN=/usr/bin/pacman
     case $1 in
@@ -132,11 +105,4 @@ function pacman(){
             sudo $CMD_PACMAN $@
         ;;
     esac
-}
-
-function parse_time() {
-    echo $1 | \
-    sed -r -e 's/^([^m]+)m([^s]+)s$/\1 \2/' -e 's/,/./' | \
-    awk '{print (60*$1)+$2}'
-
 }

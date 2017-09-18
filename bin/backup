@@ -1,31 +1,42 @@
 #!/bin/bash
 
-# Remote server
-# This should be USER@REMOTE if nothing
-# is set in ssh_config
-REMOTE=nas.guix.eu
+USER=$1
+REMOTE=$2
 BACKUP_DIR=backup
 
 # List of files/directory to backup
 LIST_BACK=($HOME/Documents $HOME/Music $HOME/Pictures)
 
-# Get last backup date
-NB_DAYS=1
-for NB_DAYS in {1..180}; do
-    PREV_DATE=$(date -d  "$NB_DAYS day ago" "+%d-%m-%Y")
-    PREV_BACKUP=$BACKUP_DIR/backup_${PREV_DATE}
+AVAIL_BACKUP=$(ssh $USER@$REMOTE "stat -c "%n" $BACKUP_DIR/*" 2> /dev/null)
 
-    if ssh $REMOTE stat $PREV_BACKUP &> /dev/null; then
-        NB_DAYS=$((NB_DAYS+1))
-    else
-        break
-    fi
-done
+# Check if there is at least one previous backup
+if [[ ! -z $AVAIL_BACKUP ]]; then
+    # Get last backup date
+    NB_DAYS=1
 
-DATE=$(date "+%d-%m-%Y")
-BACKUP_NAME=$BACKUP_DIR/backup_${DATE}
-rsync -az \
-    --delete \
-    --link-dest=../${PREV_BACKUP} \
-    ${LIST_BACK[@]} \
-    $REMOTE:$BACKUP_NAME
+    for NB_DAYS in {1..180}; do
+        PREV_DATE=$(date -d  "$NB_DAYS day ago" "+%d-%m-%Y")
+        PREV_BACKUP=$BACKUP_DIR/backup_${PREV_DATE}
+
+        if [[ ! -z $(grep $PREV_BACKUP <<< $AVAIL_BACKUP) ]]; then
+            break
+        else
+            NB_DAYS=$((NB_DAYS+1))
+        fi
+    done
+else
+    # If there is none
+    PREV_BACKUP=
+fi
+
+# Proceed to actual backup
+if [[ ! -z $PREV_BACKUP ]]; then
+    BASE_PREVBACKUP=$(basename $PREV_BACKUP)
+    DATE=$(date "+%d-%m-%Y")
+    BACKUP_NAME=$BACKUP_DIR/backup_${DATE}
+    rsync -az \
+        --delete \
+        --link-dest=../${BASE_PREVBACKUP} \
+        ${LIST_BACK[@]} \
+        $USER@$REMOTE:$BACKUP_NAME
+fi
