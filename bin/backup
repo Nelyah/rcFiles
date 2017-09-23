@@ -40,7 +40,7 @@ done
 
 # List of files/directory to backup
 LIST_BACK=()
-if [ -n $BACKUP_FILE ]; then
+if [[ -n $BACKUP_FILE ]]; then
     for el in $(cat $BACKUP); do
         LIST_BACK+=($el)
     done
