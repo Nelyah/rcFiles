@@ -19,7 +19,7 @@ exec --no-startup-id feh --bg-fill ~/.config/i3/butterfly.jpg
 exec --no-startup-id libinput-gestures-setup restart 
 exec --no-startup-id /usr/bin/redshift
 exec --no-startup-id nm-applet --sm-disable
-exec_always --no-startup-id killall polybar; polybar laptop -c "/home/chloe/.config/i3/polybar"
+exec_always --no-startup-id killall polybar; polybar laptop -c "~/.config/i3/polybar"
 
 
  # Font for window titles. Willalso be used by the bar unless a different font

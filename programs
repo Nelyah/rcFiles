@@ -10,7 +10,10 @@ clang
 yaourt
 calibre
 dnsutils
+base-deval
+dig
 
 # Yaourt
 mons
 spotify
+signal-bin

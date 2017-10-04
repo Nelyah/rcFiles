@@ -3,7 +3,7 @@
 
 
 " Required:
-set runtimepath+=/home/chloe/.vim/dein//repos/github.com/Shougo/dein.vim
+set runtimepath+=~/.vim/dein//repos/github.com/Shougo/dein.vim
 let g:dein#install_process_timeout = 300
 
 " Required:

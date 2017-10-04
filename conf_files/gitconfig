@@ -35,8 +35,8 @@
         keepBackup = true
 [http]
 [user]
-	name = Chloe Dequeker
-	email = ch.dequeker@gmail.com
+	name = @INTERNET_FULL_NAME@
+	email = @EMAIL_INTERNET@
 [filter "media"]
 	clean = git media clean %f
 	smudge = git media smudge %f
