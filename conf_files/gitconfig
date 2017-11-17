@@ -23,9 +23,10 @@
         uncommithard    = reset --hard HEAD^
         undomerge       = reset --hard ORIG_HEAD
         oups            = commit -a --amend -C HEAD
+        d               = difftool
 [branch "master"]
         remote = origin
-        merge = refs/heads/master
+        merge  = refs/heads/master
         rebase = true
 [core]
         autocrlf        = input
@@ -35,9 +36,13 @@
         keepBackup = true
 [http]
 [user]
-	name = @INTERNET_FULL_NAME@
+	name  = @INTERNET_FULL_NAME@
 	email = @EMAIL_INTERNET@
 [filter "media"]
-	clean = git media clean %f
-	smudge = git media smudge %f
+	clean    = git media clean %f
+	smudge   = git media smudge %f
 	required = true
+[diff]
+    tool   = vimdiff
+[difftool]
+    prompt = false

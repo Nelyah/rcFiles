@@ -63,27 +63,15 @@ setup_rcFiles () {
     echo " Done."
 }
 
-vim_dein () {
+vim_vundle () {
     echo -n "Setting the color theme directory in vim..."
     mkdir -p ${HOME}/.vim/
     cp -r $CONFDIR/vim/colors/ ${HOME}/.vim/
     echo " Done."
 
-    # Dein
-    echo "Setting up dein plugin manager..."
-    PLUGIN_DIR=${HOME}/.vim/dein/
-    INSTALL_DIR="${PLUGIN_DIR}/repos/github.com/Shougo/dein.vim"
-
-    # pull the plugin manager from github
-    if [ -e "$INSTALL_DIR" ]; then
-        echo "\"$INSTALL_DIR\" already exists!"
-    else
-        echo "Begin fetching dein..."
-        mkdir -p "$PLUGIN_DIR"
-        git clone https://github.com/Shougo/dein.vim "$INSTALL_DIR"
-        echo "Done."
-        echo ""
-    fi
+    # Vundle
+    echo "Setting up Vundle"
+    git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
     # copy the vimrc file into our .vim/ directory
     cp $CONFDIR/vim/vimrc ${HOME}/.vim/
@@ -95,8 +83,7 @@ vim_dein () {
     fi
 
     # Begin plugin installation
-    vim -c "call dein#install()|q"
-    vim -c "call dein#update()|q"
+    vim -c "PluginInstall"
 }
 
 build_vim() {
@@ -289,7 +276,7 @@ setup(){
 
     if [[ $VIM_PLUG == 0 ]]
     then
-        vim_dein
+        vim_vundle
     fi
 }
 

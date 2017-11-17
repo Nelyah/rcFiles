@@ -1,74 +1,62 @@
-"dein Scripts-----------------------------
-    set nocompatible               " Be iMproved
+set nocompatible               " Be iMproved
+filetype off                  " required
 
 
 " Required:
-set runtimepath+=~/.vim/dein//repos/github.com/Shougo/dein.vim
-let g:dein#install_process_timeout = 300
+set rtp+=$HOME/.vim/bundle/Vundle.vim
 
 " Required:
-if dein#load_state(expand('~/.vim/dein'))
-    call dein#begin(expand('~/.vim/dein'))                 " plugins' root path
+call vundle#begin()
 
-" Let dein manage dein
 " Required:
-    call dein#add('Shougo/dein.vim')                       " Plugin manager
+    Plugin 'VundleVim/Vundle.vim'
 
-    call dein#add('Shougo/vimproc.vim', {'build': 'make'})
-    call dein#add('kien/ctrlp.vim')                        " Fuzzy search for files in directory
-    call dein#add('lifepillar/vim-mucomplete')                " auto completion
-    call dein#add('davidhalter/jedi-vim')                " auto completion
+    Plugin 'Shougo/vimproc.vim', {'build': 'make'}
+    Plugin 'kien/ctrlp.vim'                        " Fuzzy search for files in directory
+    Plugin 'lifepillar/vim-mucomplete'                " auto completion
+    Plugin 'davidhalter/jedi-vim'                " auto completion
 
-    " call dein#add('scrooloose/syntastic')
-    call dein#add('w0rp/ale') " lint checker
+    " Plugin 'scrooloose/syntastic'
+    Plugin 'w0rp/ale' " lint checker
 
-    call dein#add('flazz/vim-colorschemes')
-    call dein#add('vim-airline/vim-airline')               " line with useful infos
-    call dein#add('vim-airline/vim-airline-themes')
-    call dein#add('airblade/vim-gitgutter')                " git info on the left
-    call dein#add('ap/vim-css-color')                      " Color highlighter
-    call dein#add('Yggdroot/indentLine')                   " Display indentation
+    Plugin 'flazz/vim-colorschemes'
+    Plugin 'vim-airline/vim-airline'               " line with useful infos
+    Plugin 'vim-airline/vim-airline-themes'
+    Plugin 'airblade/vim-gitgutter'                " git info on the left
+    Plugin 'ap/vim-css-color'                      " Color highlighter
+    Plugin 'Yggdroot/indentLine'                   " Display indentation
 
-    call dein#add('Raimondi/delimitMate')                  " For parenthesis
+    Plugin 'Raimondi/delimitMate'                  " For parenthesis
 
     " NERDtree loaded on toggle
-    call dein#add('scrooloose/nerdtree',
-          \{'on_cmd': 'NERDTreeToggle'})
-    call dein#add('Xuyuanp/nerdtree-git-plugin',
-          \{'on_cmd': 'NERDTreeToggle'})
+    Plugin 'scrooloose/nerdtree'
+    Plugin 'Xuyuanp/nerdtree-git-plugin'
 
-    call dein#add('tmhedberg/SimpylFold')
-    call dein#add('godlygeek/tabular',
-          \{ 'on_cmd' : [ 'Tab', 'Tabularize' ], 
-          \'augroup' : 'tabular' })                         " Tabuliarise and align based on pattern
+    Plugin 'tmhedberg/SimpylFold'
+    Plugin 'godlygeek/tabular'                        " Tabuliarise and align based on pattern
 
-    call dein#add('sheerun/vim-polyglot')
-    call dein#add('vim-python/python-syntax')
+    Plugin 'sheerun/vim-polyglot'
+    Plugin 'vim-python/python-syntax'
 
-    call dein#add('tpope/vim-commentary')                  " comments based on the file type
-    call dein#add('tpope/vim-surround')
-    call dein#add('tpope/vim-sensible')
-    call dein#add('tpope/vim-fugitive')
+    Plugin 'tpope/vim-commentary'                  " comments based on the file type
+    Plugin 'tpope/vim-surround'
+    Plugin 'tpope/vim-sensible'
+    Plugin 'tpope/vim-fugitive'
 
-    call dein#add('majutsushi/tagbar')
-    call dein#add('def-lkb/vimbufsync')
-    call dein#add('terryma/vim-expand-region')
-    call dein#add('xolox/vim-misc')
-    call dein#add('terryma/vim-multiple-cursors')
-    call dein#add('marcweber/vim-addon-mw-utils')
-    call dein#add('tomtom/tlib_vim')
-    call dein#add('majutsushi/tagbar')
+    Plugin 'def-lkb/vimbufsync'
+    Plugin 'terryma/vim-expand-region'
+    Plugin 'xolox/vim-misc'
+    Plugin 'terryma/vim-multiple-cursors'
+    Plugin 'marcweber/vim-addon-mw-utils'
+    Plugin 'tomtom/tlib_vim'
+    Plugin 'majutsushi/tagbar'
 
-    call dein#add('SirVer/ultisnips')
-    call dein#add('honza/vim-snippets')
+    Plugin 'SirVer/ultisnips'
+    Plugin 'honza/vim-snippets'
 
-    call dein#end()
-    call dein#save_state()
-endif
+call vundle#end()
 
-"""""""""""""""""""""""""""
-" Basic VIM modifications "
-"""""""""""""""""""""""""""
+" ------ Basic VIM modifications " ------ ""
 
 set guioptions=M
 
@@ -94,9 +82,9 @@ set magic               " For regex
 set ignorecase
 
 " vim tmp files
-set directory=~/.vim/swap,/tmp
-set backupdir=~/.vim/backup,/tmp
-set undodir=~/.vim/undo,/tmp
+set directory=$HOME/.vim/swap,/tmp
+set backupdir=$HOME/.vim/backup,/tmp
+set undodir=$HOME/.vim/undo,/tmp
 
 
 " mapping the 'super' button on space
@@ -114,12 +102,13 @@ let g:netrw_sizestyle = "H" " Human-readable file sizes
 " let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+' " hide dotfiles
 " let g:netrw_hide = 1 " hide dotfiles by default
 let g:netrw_banner = 0 " Turn off banner
+
 """ Explore in vertical split
 nnoremap <Leader>e :Explore! <enter>
 
 syntax on
 filetype on
-filetype plugin on
+filetype plugin indent on
 
 " Some remaps
 noremap m l
@@ -143,8 +132,7 @@ noremap <Leader>x "+
 " Stupid window...
 map q: :q
 
-" Buffers 
-""""""""""
+" ------ Buffer ------ "
 nnoremap <Leader>j :bp<CR>
 nnoremap <Leader>m :bn<CR>
 nnoremap gl :ls<CR>
@@ -167,54 +155,47 @@ colorscheme ir_black
 "        PLUGINS          "
 """""""""""""""""""""""""""
 
-"""""""""""""""""""""""""""""""""
-" ale plugin (syntax checking)
+" ------ ALE ------ "
 " Prevents from continuously checking for errors
 " and eating up battery
-"""""""""""""""""""""""""""""""""
-let g:ale_lint_on_text_changed = 'never'
+" let g:ale_lint_on_text_changed = 'never'
+let g:ale_sign_column_always = 1
+let g:ale_linters = {'python': ['flake8']}
+let g:ale_fixers = {'python': ['remove_trailing_lines', 'trim_whitespace']}
 
+" ------ jedi-python ------"
+let g:jedi#popup_on_dot = 0
+map <Leader>b Oimport pdb; pdb.set_trace() # BREAKPOINT<C-c>
 
-"""""""""""""""""""""""""""""""""
-" Airline Plugin
-"""""""""""""""""""""""""""""""""
+" ------ Airline Plugin ------ "
 let g:airline_theme = 'bubblegum'
 let g:airline#extensions#tabline#enabled = 1
 set laststatus=2
 
-"""""""""""""""""""
-" YOU COMPLETE ME "
-"""""""""""""""""""
-" config File
-" let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
-" let g:ycm_python_binary_path = '/usr/bin/python3'
-" let g:ycm_confirm_extra_conf = 0
-
-" CtrlP plugin
+" ------ CtrlP plugin ------ "
 nnoremap <Leader>o :CtrlP<CR>
 autocmd CompleteDone * pclose
 
-" pops Tagbar
+" ------ Tagbar ------ "
 nmap <F8> :TagbarToggle<CR>
 
-" Expand regions 
+" ------ Expand regions  ------ "
 vmap v <Plug>(expand_region_expand)
 vmap <C-v> <Plug>(expand_region_shrink)
 
 
-"Python folding plugin : To be able to read doc
+" ------ Python folding  ------ "
+" Be able to read doc
 let g:SimpylFold_docstring_preview = 1
 
-" Git plugin
-"""""""""""""
+" ------ Git plugin ------ "
 set diffopt+=vertical
 
-""""""""""""""""""""""""""""""""""
-" Tabular
+" ------ Tabular ------ "
 nmap <Leader>a= :Tabularize /=<CR>
 vmap <Leader>a= :Tabularize /=<CR>
 
-" Mu Complete Autocompletion
+" ------ Mu Complete ------ "
 set completeopt+=longest,menuone,noinsert,noselect
 set shortmess+=c " Turn off completion messages
 
@@ -225,20 +206,18 @@ inoremap <expr>  <cr> mucomplete#popup_exit("\<cr>")
 let g:mucomplete#chains = {'default' : ['path', 'omni', 'keyn', 'dict', 'incl', 'tags', 'ulti']}
 let g:mucomplete#enable_auto_at_startup = 1
 
-" Ultisnips
+" ------ Ultisnips ------ "
 let g:UltiSnipsExpandTrigger="<c-c>"
 let g:UltiSnipsJumpForwardTrigger="<c-n>"
 let g:UltiSnipsJumpBackwardTrigger="<c-b>"
 
-" VIM polyglot
+" ------ VIM polyglot ------ "
 let g:polyglot_disabled = ['python']
 
-" python-syntax
+" ------ python-syntax ------ "
 let g:python_highlight_all = 1
 
-"""""""""""""""""""
-" Useful function "
-"""""""""""""""""""
+" ------ Useful function ------ "
 
 " pasting doesn't replace paste buffer
 function! RestoreRegister()
@@ -250,3 +229,13 @@ function! s:Repl()
     return "p@=RestoreRegister()\<cr>"
 endfunction
 vmap <silent> <expr> p <sid>Repl()
+
+" Keep undo history across sessions by storing it in a file
+if has('persistent_undo')
+    let undo_dir = expand('$HOME/.vim/undo_dir')
+    if !isdirectory(undo_dir)
+        call mkdir(undo_dir, "", 0700)
+    endif
+    set undodir=$HOME/.vim/undo_dir
+    set undofile
+endif
