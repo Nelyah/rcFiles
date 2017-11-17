@@ -12,8 +12,13 @@ calibre
 dnsutils
 base-deval
 dig
+gufw
+autossh
+python-pylint
+flake8
 
 # Yaourt
 mons
 spotify
 signal-bin
+mypy
