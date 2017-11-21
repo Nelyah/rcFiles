@@ -25,7 +25,7 @@ call vundle#begin()
     Plugin 'ap/vim-css-color'                      " Color highlighter
     Plugin 'altercation/vim-colors-solarized'      " Colour scheme
     Plugin 'joshdick/onedark.vim'                  " Colour scheme
-    Plugin 'Yggdroot/indentLine'                   " Display indentation
+    " Plugin 'Yggdroot/indentLine'                   " Display indentation
 
     Plugin 'Raimondi/delimitMate'                  " For parenthesis
 
@@ -169,6 +169,9 @@ endif
 """""""""""""""""""""""""""
 "        PLUGINS          "
 """""""""""""""""""""""""""
+
+" ------ Clang-complete ------ "
+let g:clang_library_path='/usr/lib64/libclang.so'
 
 " ------ ALE ------ "
 " Prevents from continuously checking for errors
