@@ -16,6 +16,8 @@ gufw
 autossh
 python-pylint
 flake8
+ctags
+ack
 
 # Yaourt
 mons
