@@ -12,8 +12,8 @@ call vundle#begin()
 
     Plugin 'Shougo/vimproc.vim', {'build': 'make'}
     Plugin 'kien/ctrlp.vim'                        " Fuzzy search for files in directory
-    " Plugin 'lifepillar/vim-mucomplete'                " auto completion
-    Plugin 'roxma/nvim-completion-manager'
+    Plugin 'roxma/nvim-completion-manager'       " auto completion
+    Plugin 'roxma/clang_complete'                " auto completion
     Plugin 'davidhalter/jedi-vim'                " auto completion
 
     Plugin 'w0rp/ale' " lint checker
@@ -57,7 +57,7 @@ call vundle#begin()
 
 call vundle#end()
 
-" ------ Basic VIM modifications " ------ ""
+" ------ Basic VIM modifications ------ "
 
 set guioptions=M
 
@@ -179,7 +179,7 @@ let g:ale_linters = {'python': ['flake8']}
 let g:ale_fixers = {'python': ['remove_trailing_lines', 'trim_whitespace']}
 
 " ------ NERDtree ------"
-map <Leader>n :NERDtree
+map <Leader>n :NERDTree<return><CR>
 
 " ------ jedi-python ------"
 let g:jedi#popup_on_dot = 0
