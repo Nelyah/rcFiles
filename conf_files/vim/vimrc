@@ -1,7 +1,6 @@
 set nocompatible               " Be iMproved
 filetype off                  " required
 
-
 " Required:
 set rtp+=$HOME/.vim/bundle/Vundle.vim
 
@@ -13,10 +12,10 @@ call vundle#begin()
 
     Plugin 'Shougo/vimproc.vim', {'build': 'make'}
     Plugin 'kien/ctrlp.vim'                        " Fuzzy search for files in directory
-    Plugin 'lifepillar/vim-mucomplete'                " auto completion
+    " Plugin 'lifepillar/vim-mucomplete'                " auto completion
+    Plugin 'roxma/nvim-completion-manager'
     Plugin 'davidhalter/jedi-vim'                " auto completion
 
-    " Plugin 'scrooloose/syntastic'
     Plugin 'w0rp/ale' " lint checker
 
     Plugin 'flazz/vim-colorschemes'
@@ -24,6 +23,8 @@ call vundle#begin()
     Plugin 'vim-airline/vim-airline-themes'
     Plugin 'airblade/vim-gitgutter'                " git info on the left
     Plugin 'ap/vim-css-color'                      " Color highlighter
+    Plugin 'altercation/vim-colors-solarized'      " Colour scheme
+    Plugin 'joshdick/onedark.vim'                  " Colour scheme
     Plugin 'Yggdroot/indentLine'                   " Display indentation
 
     Plugin 'Raimondi/delimitMate'                  " For parenthesis
@@ -63,16 +64,17 @@ set guioptions=M
 set hidden " Allow background buffers without saving
 set splitright
 
-set t_Co=256 
+" set t_Co=256 
 set number              " line numbers
+hi CursorLineNr guifg=#dddddd
 set encoding=utf-8
 
 set autoindent
 set autoread            " reload automatically a file if not changed
 
 " Text wrapping
-set nowrap
-set textwidth=79
+" set nowrap
+" set textwidth=79
 " set colorcolumn=80
 
 " Search 
@@ -107,7 +109,6 @@ let g:netrw_banner = 0 " Turn off banner
 nnoremap <Leader>e :Explore! <enter>
 
 syntax on
-filetype on
 filetype plugin indent on
 
 " Some remaps
@@ -122,6 +123,11 @@ nnoremap <C-j> <C-w>h
 nnoremap <C-k> <C-w>j
 nnoremap <C-l> <C-w>k
 nnoremap <C-m> <C-w>l
+" Navigate display lines
+noremap <silent> k gj
+noremap <silent> l gk
+noremap K 5j
+noremap L 5k
 
 " Saving
 nnoremap <Leader>w :w<CR>
@@ -131,6 +137,10 @@ noremap <Leader>x "+
 
 " Stupid window...
 map q: :q
+
+" Align blocks of texte and keep them selected
+vmap < <gv
+vmap > >gv
 
 " ------ Buffer ------ "
 nnoremap <Leader>j :bp<CR>
@@ -149,7 +159,12 @@ nmap <Leader><Leader> V
 nnoremap <Leader>a :noh<return><CR>
 
 " Color scheme
-colorscheme ir_black
+set background=dark
+colorscheme onedark
+
+if (has("nvim"))
+    set termguicolors
+endif
 
 """""""""""""""""""""""""""
 "        PLUGINS          "
@@ -162,6 +177,9 @@ colorscheme ir_black
 let g:ale_sign_column_always = 1
 let g:ale_linters = {'python': ['flake8']}
 let g:ale_fixers = {'python': ['remove_trailing_lines', 'trim_whitespace']}
+
+" ------ NERDtree ------"
+map <Leader>n :NERDtree
 
 " ------ jedi-python ------"
 let g:jedi#popup_on_dot = 0
@@ -195,16 +213,12 @@ set diffopt+=vertical
 nmap <Leader>a= :Tabularize /=<CR>
 vmap <Leader>a= :Tabularize /=<CR>
 
-" ------ Mu Complete ------ "
+" ------ Neo complete ------ "
 set completeopt+=longest,menuone,noinsert,noselect
 set shortmess+=c " Turn off completion messages
 
-inoremap <expr> <c-e> mucomplete#popup_exit("\<c-e>")
-inoremap <expr> <c-y> mucomplete#popup_exit("\<c-y>")
-inoremap <expr>  <cr> mucomplete#popup_exit("\<cr>")
-
-let g:mucomplete#chains = {'default' : ['path', 'omni', 'keyn', 'dict', 'incl', 'tags', 'ulti']}
-let g:mucomplete#enable_auto_at_startup = 1
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " ------ Ultisnips ------ "
 let g:UltiSnipsExpandTrigger="<c-c>"
