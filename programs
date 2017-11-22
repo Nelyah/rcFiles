@@ -18,6 +18,7 @@ python-pylint
 flake8
 ctags
 ack
+yapf
 
 # Yaourt
 mons
