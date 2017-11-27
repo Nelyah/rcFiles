@@ -40,6 +40,9 @@ Host ppti-student
     HostName ssh.ufr-info-p6.jussieu.fr
     User @UPMC-STUDENT-LOGIN@
 
+Host aur.archlinux.org
+    User aur
+
 Host nivose
     HostName nivose.informatique.univ-paris-diderot.fr
     User @USER_LASTNAME@
