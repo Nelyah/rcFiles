@@ -1,5 +1,5 @@
 # Pacman
-gvim
+nvim
 fzf
 git
 htop
@@ -19,9 +19,10 @@ flake8
 ctags
 ack
 yapf
+stow
 
-# Yaourt
+# AUR
 mons
 spotify
-signal-bin
+signal-desktop-bin
 mypy

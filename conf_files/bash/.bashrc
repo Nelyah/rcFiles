@@ -87,17 +87,17 @@ alias ....='cd ../../..'
 alias .....='cd ../../../..'
 
 # Useful function
-function pacman(){
-    CMD_PACMAN=/usr/bin/pacman
+function pac(){
+    CMD_PACMAN=/usr/bin/pacaur
     case $1 in
-        update )
+        update|up)
             sudo $CMD_PACMAN -Syu
         ;;
-        install ) 
+        install) 
             shift
             sudo $CMD_PACMAN -S $@
         ;;
-        remove )
+        remove)
             shift
             sudo $CMD_PACMAN -Rns $@
         ;;
