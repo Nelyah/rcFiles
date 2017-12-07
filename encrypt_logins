@@ -6,7 +6,31 @@ then
     exit 1
 fi
 
-gpg --output logins.gpg -c logins
+for file in $(find conf_files/ -type f)
+do
+    # For each column of the logins file
+    awk -F"---" '{
+        if(substr($1,1,1) != "#"){ 
+            print $1 $2
+        }
+    }' logins | \
+    while read key value
+    do
+        # Replace in the file
+        if [[ $key != "" ]]
+        then
+            sed -r -i "s/$value/$key/g" $file
+        fi
+    done
+done
+
+
+read -p "Do you want to GPG encrypt the logins file? [yN] " -n 1 -r
+echo ""
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    gpg --output logins.gpg -c logins
+fi
 
 # if failure...
 if [[ $? != 0 ]]
